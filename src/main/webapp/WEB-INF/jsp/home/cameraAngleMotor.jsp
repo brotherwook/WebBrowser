@@ -33,10 +33,9 @@
 				value = JSON.parse(value)
 				console.log(typeof(value))
 				console.log(value)
-	  			if(value.motor=="cameraUD"){
-	  				var cameraView = $('#cameraUD').attr('value',value.angle)
-	  			}else if(value.motor=="cameraLR"){
-	  				var cameraView2 = $('#cameraLR').attr('value',value.angle)
+	  			if(message.destinationName == "/sensor"){
+	  				$('#cameraUD').attr('value',value.cudangle)
+	  				$('#cameraLR').attr('value',value.clrangle)
 	  			}
 			}
 		</script>
