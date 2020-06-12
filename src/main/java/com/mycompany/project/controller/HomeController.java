@@ -22,4 +22,9 @@ public class HomeController {
 		LOGGER.info("실행");
 		return "home/exam19_mqtt";
 	}
+	@RequestMapping("/cameraAngleMotor.do")
+	public String cameraAngleMotor() {
+		LOGGER.info("실행");
+		return "home/cameraAngleMotor";
+	}
 }

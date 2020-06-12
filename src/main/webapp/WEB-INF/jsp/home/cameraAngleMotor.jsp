@@ -13,6 +13,7 @@
 		<script src="${pageContext.request.contextPath}/resource/bootstrap/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.css">
 		<script src="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
 		<script>
 			$(function(){
 				client = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime.toString());
