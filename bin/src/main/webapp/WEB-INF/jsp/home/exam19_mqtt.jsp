@@ -28,21 +28,21 @@
 			
 			// called when a message arrives
 			function onMessageArrived(message) {
-				if(message.destinationName == "/sensor") {
-					$("#cameraView").html(message.payloadString);
+				if(message.destinationName == "/camerapub") {
+					$("#cameraView").attr("src", "data:image/jpg;base64, " + message.payloadString);
 				}
 			}
 
 			// called when the client connects
 			function onConnect() {
 				console.log("mqtt broker connected");
-				client.subscribe("/sensor");
+				client.subscribe("/camerapub");
 			}
 		</script>
 	</head>
 	<body>
 		<h5 class="alert alert-info">/home/exam19_mqtt.jsp</h5>
 		
-		<div id="cameraView"> </div>
+		<img id="cameraView" />
 	</body>
 </html>
