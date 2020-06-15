@@ -20,6 +20,13 @@ public class HomeController {
 	@RequestMapping("/exam19_mqtt.do")
 	public String exam19_mqtt() {
 		LOGGER.info("실행");
-		return "home/exam19_mqtt";
+		return "home/yehna_web_mqtt";
+	}
+	
+	@RequestMapping("/receivedData.do")
+	public String receivedData(String tracker) throws Exception {
+		LOGGER.info("실행");
+		LOGGER.info("tracker: {}", tracker);
+		return "home/yehna_web_mqtt";
 	}
 }

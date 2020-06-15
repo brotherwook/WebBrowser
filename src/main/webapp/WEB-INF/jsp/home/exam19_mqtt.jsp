@@ -29,7 +29,7 @@
 			// called when a message arrives
 			function onMessageArrived(message) {
 				if(message.destinationName == "/camerapub") {
-					$("#cameraView").attr("src", "data:image/jpg;base64, " + message.payloadString);
+					$("#cameraView").attr("src", "application/json; charset=UTF-8, " + message.payloadString);
 				}
 			}
 
