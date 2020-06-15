@@ -23,12 +23,33 @@ public class HomeController {
 		return "home/yehna_web_mqtt";
 	}
 	
+	// ---------- MQTT Subscriber ----------
+	// yehna_web_mqtt에서 json 데이터를 전달 받음
 	@RequestMapping("/receivedData.do")
-	public String receivedData(String tracker) throws Exception {
+	public String receivedData(String buzzer, String dcmotor_speed, String dcmotor_dir,
+			String gas, String distance, String laser, String photo, String led, 
+			String servo1, String servo2, String servo3, String servo4, String temperature,
+			String tracker) throws Exception {
 		LOGGER.info("실행");
+		LOGGER.info("buzzer: {}", buzzer);
+		LOGGER.info("dcmotor_speed: {}", dcmotor_speed);
+		LOGGER.info("dcmotor_dir: {}", dcmotor_dir);
+		LOGGER.info("gas: {}", gas);
+		LOGGER.info("distance: {}", distance);
+		LOGGER.info("laser: {}", laser);
+		LOGGER.info("photo: {}", photo);
+		LOGGER.info("led: {}", led);
+		LOGGER.info("servo1: {}", servo1);
+		LOGGER.info("servo2: {}", servo2);
+		LOGGER.info("servo3: {}", servo3);
+		LOGGER.info("servo4: {}", servo4);
+		LOGGER.info("temperature: {}", temperature);
 		LOGGER.info("tracker: {}", tracker);
 		return "home/yehna_web_mqtt";
 	}
+	
+	// ---------- MQTT Publisher ----------
+	
 	@RequestMapping("/cameraAngleMotor.do")
 	public String cameraAngleMotor() {
 		LOGGER.info("실행");
