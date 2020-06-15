@@ -29,4 +29,9 @@ public class HomeController {
 		LOGGER.info("tracker: {}", tracker);
 		return "home/yehna_web_mqtt";
 	}
+	@RequestMapping("/cameraAngleMotor.do")
+	public String cameraAngleMotor() {
+		LOGGER.info("실행");
+		return "home/cameraAngleMotor";
+	}
 }
