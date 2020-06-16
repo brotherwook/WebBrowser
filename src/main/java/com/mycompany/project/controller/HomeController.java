@@ -16,9 +16,13 @@ public class HomeController {
 		LOGGER.info("실행");
 		return "home/main";
 	}
-
 	@RequestMapping("/exam19_mqtt.do")
 	public String exam19_mqtt() {
+		LOGGER.info("실행");
+		return "home/exam19_mqtt";
+	}
+	@RequestMapping("/yehna_web_mqtt.do")
+	public String yehna_web_mqtt() {
 		LOGGER.info("실행");
 		return "home/yehna_web_mqtt";
 	}
