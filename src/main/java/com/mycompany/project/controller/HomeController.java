@@ -30,7 +30,7 @@ public class HomeController {
 			String gas, String distance, String laser, String photo, String led, 
 			String servo1, String servo2, String servo3, String servo4, String temperature,
 			String tracker) throws Exception {
-		LOGGER.info("실행");
+		LOGGER.info("---------------------------------");
 		LOGGER.info("buzzer: {}", buzzer);
 		LOGGER.info("dcmotor_speed: {}", dcmotor_speed);
 		LOGGER.info("dcmotor_dir: {}", dcmotor_dir);
