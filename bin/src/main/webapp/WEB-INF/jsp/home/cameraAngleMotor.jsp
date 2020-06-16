@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix ="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix ="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -15,37 +15,39 @@
 		<script src="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
 		<script>
-			$(function() {
-				// Create a client instance
-				client = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime().toString());
-				
-				// set callback handlers
-				client.onMessageArrived = onMessageArrived;
-				
-				// connect the client
+			$(function(){
+				client = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime.toString());
 				client.connect({onSuccess:onConnect});
-			});
+				client.onMessageArrived = onMessageArrived;
+			})
 			
-			// called when a message arrives
-			function onMessageArrived(message) {
-				if(message.destinationName == "/camerapub") {
-					$("#cameraView").attr("src", "application/json; charset=UTF-8, " + message.payloadString);
-				}
-				if(message.destinationName == "/sensor") {
-					$("#cameraView").html(message.payloadString);
-				}
+			function onConnect() {
+		  		console.log('mqtt broker connected')
+				client.subscribe("/sensor");
+		  		message = new Paho.MQTT.Message("Hello");
+			  	message.destinationName = "/command";
+			  	client.send(message);
 			}
 
-			// called when the client connects
-			function onConnect() {
-				console.log("mqtt broker connected");
-				client.subscribe("/sensor");
+			function onMessageArrived(message) {
+				var value = message.payloadString
+				value = JSON.parse(value)
+				console.log(typeof(value))
+				console.log(value)
+	  			if(message.destinationName == "/sensor"){
+	  				$('#cameraUD').attr('value',value.cudangle)
+	  				$('#cameraLR').attr('value',value.clrangle)
+	  			}
 			}
 		</script>
 	</head>
 	<body>
-		<h5 class="alert alert-info">/home/exam19_mqtt.jsp</h5>
-		
-		<div id="cameraView"> </div>
+		<h5 class = "alert alert-info" >/cameraAngle.jsp</h5>
+		<div align="center">
+			<input id="cameraUD" readonly>
+		</div>
+		<div align="center">
+			<input id="cameraLR" readonly>
+			</div>
 	</body>
 </html>

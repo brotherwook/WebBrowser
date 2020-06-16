@@ -28,6 +28,8 @@
 		
 		<ul>
 			<li><a href="exam19_mqtt.do">exam19_mqtt.do</a></li>
+			<li><a href="cameraAngleMotor.do">cameraAngleMotor.do</a></li>
+			
 		</ul>
 	</body>
 </html>
