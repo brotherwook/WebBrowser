@@ -78,7 +78,9 @@
 	</head>
 	<body>
 		<h5 class="alert alert-info">/home/yehna_web_mqtt.jsp</h5>
-		
+
+		<div id="div1"></div>
+
 		<form action="" method="post" onsubmit="sendMessage()">
 			<input id="command" type="text" name="command" />
 			<input type="submit" value="전송" />
