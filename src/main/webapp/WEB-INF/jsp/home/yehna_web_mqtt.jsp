@@ -14,9 +14,22 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.css">
 		<script src="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+<<<<<<< HEAD
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/onoffbutton.css">
+=======
+		
+		<style>			
+			#moveCar a {
+				margin:5px;
+			}
+		</style>
+		
+>>>>>>> branch 'master' of https://github.com/brotherwook/WebBrowser
 		<script>
+			var buzzer_flag;
+			var laser_flag;
+			
 			$(function() {
 				// Subscriber Connection
 				subscriber = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime().toString());
@@ -55,6 +68,12 @@
 							
 						}
 					})
+
+					// Buzzer ON/OFF 데이터 전송 받음
+					buzzer_flag = sensor.buzzer;
+					
+					// Laser ON/OFF 데이터 전송 받음
+					laser_flag = sensor.laser;
 				}
 			}
 
@@ -63,19 +82,18 @@
 				console.log("mqtt broker subscriber connected");
 				subscriber.subscribe("/sensor");
 			}
-			
+
 			function onPublisherConnect() {
 				console.log("mqtt broker publisher connected");
 			}
-			
-			function sendMessage() {
-				var command = $("#command").val();
+
+			function lcd() {
+				var text = $("#lcd").val();
 				var message = new Paho.MQTT.Message(command);
-				message.destinationName = "/command/servo1";
-				message.qos = 0;
-				message.retain = false;
-			    publisher.send(message);
+				message.destinationName = "/command/servo3";
+				publisher.send(message);
 			}
+
 			
 			
 			function button_click(){
@@ -87,11 +105,72 @@
 					$("#p1").html("ON")
 				}
 			}
+
+
+			function buzzer() {
+				if(buzzer_flag == "on") {
+					buzzer_flag = "off";
+				} else {
+					buzzer_flag = "on";
+				}
+				var buzzer_message = new Paho.MQTT.Message(buzzer_flag);
+				buzzer_message.destinationName = "/command/buzzer";
+				publisher.send(buzzer_message);
+			}
+
+			function laser() {
+				if(laser_flag == "on") {
+					laser_flag = "off";
+				} else {
+					laser_flag = "on";
+				}
+				var message = new Paho.MQTT.Message(laser_flag);
+				message.destinationName = "/command/laser";
+				publisher.send(message);
+			}
+			
+			function forward() {
+				var message = new Paho.MQTT.Message("forward");
+				message.destinationName = "/command/direction";
+				publisher.send(message);
+			}
+			
+			function backward() {
+				var message = new Paho.MQTT.Message("backward");
+				message.destinationName = "/command/direction";
+				publisher.send(message);
+			}
+			
+			function stop() {
+				var message = new Paho.MQTT.Message("stop");
+				message.destinationName = "/command/direction";
+				publisher.send(message);
+			}
 			
 		</script>
 	</head>
 	<body>
 		<h5 class="alert alert-info">/home/yehna_web_mqtt.jsp</h5>
+		
+		<div>
+			<a id="buzzer" class="btn btn-info" onclick="buzzer()">Buzzer</a>
+			<a id="laser" class="btn btn-danger" onclick="laser()">Laser</a>
+		</div>
+
+		<div id="moveCar" style="margin-top: 20px;">
+			<a id="forward" style="margin-left: 60px;" class="btn btn-warning" onclick="forward()">Forward</a>
+			<br/>
+			<a id="left" class="btn btn-warning" onclick="left()">Left</a>
+			<a id="stop" class="btn btn-secondary" onclick="stop()">Stop</a>
+			<a id="right" class="btn btn-warning" onclick="right()">Right</a>
+			<br/>
+			<a id="backward" style="margin-left: 55px;" class="btn btn-warning" onclick="backward()">Backward</a>
+		</div>
+		<br/>
+		
+		<form action="" method="post" onsubmit="lcd()">
+			<input id="lcd" type="text" name="lcd_text" />
+		</form>
 
 		<form action="" method="post" onsubmit="sendMessage()">
 			<input id="command" type="text" name="command" />
