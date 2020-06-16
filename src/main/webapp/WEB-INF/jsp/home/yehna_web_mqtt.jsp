@@ -14,18 +14,13 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.css">
 		<script src="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
-<<<<<<< HEAD
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/onoffbutton.css">
-=======
-		
 		<style>			
 			#moveCar a {
 				margin:5px;
 			}
 		</style>
-		
->>>>>>> branch 'master' of https://github.com/brotherwook/WebBrowser
 		<script>
 			var buzzer_flag;
 			var laser_flag;
@@ -43,7 +38,11 @@
 			
 			// called when a message arrives
 			function onMessageArrived(message) {
+				if(message.destinationName == "/camerapub") {
+					$("#cameraView").attr("src", "data:image/jpg;base64, " + message.payloadString);
+				}
 				if(message.destinationName == "/sensor") {
+					console.log("메세지 받는중")
 					sensor = JSON.parse(message.payloadString);
 					$.ajax({
 						type: "POST",
@@ -79,8 +78,8 @@
 
 			// called when the client connects
 			function onSubscriberConnect() {
-				console.log("mqtt broker subscriber connected");
-				subscriber.subscribe("/sensor");
+				console.log("mqtt broker subscriber connected");  
+				subscriber.subscribe("/#");
 			}
 
 			function onPublisherConnect() {
@@ -147,6 +146,7 @@
 				publisher.send(message);
 			}
 			
+			
 		</script>
 	</head>
 	<body>
@@ -182,5 +182,7 @@
 			<span class="slider round"></span>
 		</label>
 		<p id="p1">OFF</p>
+		
+		<img id="cameraView" />
 	</body>
 </html>
