@@ -55,4 +55,13 @@ public class HomeController {
 		LOGGER.info("실행");
 		return "home/cameraAngleMotor";
 	}
+	
+	// ---------- 박성진 ----------------------
+	@RequestMapping("/sungjin.do")
+	public String sungjin() {
+		LOGGER.info("실행");
+		return "home/sungjin";
+	}
+	
+	// --------------------------------------
 }
