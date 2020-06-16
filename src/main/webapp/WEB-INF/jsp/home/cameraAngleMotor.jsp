@@ -14,20 +14,24 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.css">
 		<script src="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 		<script>
 			$(function(){
-				client = new Paho.MQTT.Client('192.168.3.131', 61614, new Date().getTime.toString());
-				client.connect({onSuccess:onConnect});
-				client.onMessageArrived = onMessageArrived;
+				subscriber = new Paho.MQTT.Client('192.168.3.131', 61614, new Date().getTime.toString());
+				subscriber.connect({onSuccess:onConnect});
+				subscriber.onMessageArrived = onMessageArrived;
+				
+				publisher = new Paho.MQTT.Client('192.168.3.131', 61614, new Date().getTime.toString());
+				publisher.connect({onSuccess:onConnect})
 			})
 			
 			function onConnect() {
 		  		console.log('mqtt broker connected')
-				client.subscribe("#");
+				subscriber.subscribe("#");
 			}
 
 			function onMessageArrived(message) {
-	  			console.log('수신')
+	  			console.log(message.payloadString)
 				var value = message.payloadString
 				value = JSON.parse(value)
 	  			if(message.destinationName == "/sensor"){
@@ -39,24 +43,24 @@
 				}
 			}
 			function cameraMoveUp(){
-				message = new Messaging.Message("CameraUp");
+				message = new Paho.MQTT.Message("CameraUp");
 			    message.destinationName = "/command";
-			    client.send(message);
+			    publisher.send(message);
 			}
 			function cameraMoveDown(){
-				message = new Messaging.Message("CameraDown");
+				message = new Paho.MQTT.Message("CameraDown");
 			    message.destinationName = "/command";
-			    client.send(message);
+			    publisher.send(message);
 			}
 			function cameraMoveLeft(){
-				message = new Messaging.Message("CamerLeft");
+				message = new Paho.MQTT.Message("CameraLeft");
 			    message.destinationName = "/command";
-			    client.send(message);
+			    publisher.send(message);
 			}
 			function cameraMoveRight(){
-				message = new Messaging.Message("CameraRight");
+				message = new Paho.MQTT.Message("CameraRight");
 			    message.destinationName = "/command";
-			    client.send(message);
+			    publisher.send(message);
 			}
 		</script>
 	</head>
