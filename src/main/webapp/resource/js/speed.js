@@ -109,7 +109,7 @@ $(function(){
 
 	            point.update(newVal);
 
-	        }, 1000);
+	        }, 10);
 	    }
 	});
 });
