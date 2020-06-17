@@ -520,7 +520,7 @@
 			<figure class="highcharts-figure">
 			    <div id="container"></div>
 			    <p class="highcharts-description">
-			        	카메라 위치
+			        	카메라 각도
 			    </p>
 			</figure>
 			<figure class="highcharts-figure" style="display:inline-block">
