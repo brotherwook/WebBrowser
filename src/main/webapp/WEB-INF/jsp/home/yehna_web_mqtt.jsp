@@ -165,35 +165,29 @@
 
 			// -------------- Servo Motor --------------
 			var hcsr_angle = 90;
-			var isPressed = false;
 			
 			function hcsrMotor_down(direction) {
-				hcsr_flag = true;
-					console.log("클릭");
-					if(direction == "left") {
-						if (hcsr_angle >= 180)
-							hcsr_angle = 180;
-						else
-							hcsr_angle += 30;
-					}
-					else if(direction == "right") {
-						if (hcsr_angle <= 0)
-							hcsr_angle = 0;
-						else
-							hcsr_angle -= 30;
-					}
+				if(direction == "left") {
+					if (hcsr_angle >= 180)
+						hcsr_angle = 180;
 					else
-						hcsr_angle = 90;
-					
-					var message = new Paho.MQTT.Message(hcsr_angle.toString());
-					message.destinationName = "/command/servo3";
-					publisher.send(message);
+						hcsr_angle += 30;
+				}
+				else if(direction == "right") {
+					if (hcsr_angle <= 0)
+						hcsr_angle = 0;
+					else
+						hcsr_angle -= 30;
+				}
+				else
+					hcsr_angle = 90;
 				
-			}
+				var message = new Paho.MQTT.Message(hcsr_angle.toString());
+				message.destinationName = "/command/servo3";
+				publisher.send(message);
 			
-			function hcsrMotor_up() {
-				hcsr_flag = false;
 			}
+
 		</script>
 	</head>
 	<body>
@@ -215,11 +209,9 @@
 		</div>
 		
 
-		<a class="arrow-left" onmousedown="hcsrMotor_down('left')" onmouseup="hcsrMotor_up()" 
-		style="display: inline-block; margin: 10px"></a>
+		<a class="arrow-left" onmousedown="hcsrMotor_down('left')" style="display: inline-block; margin: 10px"></a>
 
-		<a class="arrow-right" onmousedown="hcsrMotor_down('right')" onmouseup="hcsrMotor_up()" 
-		style="display: inline-block; margin: 10px"></a>
+		<a class="arrow-right" onmousedown="hcsrMotor_down('right')" style="display: inline-block; margin: 10px"></a>
 
 		
 		<br/>
