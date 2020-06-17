@@ -1,6 +1,6 @@
 $(function() {
 	// Subscriber Connection
-	subscriber = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime().toString());
+	subscriber = new Paho.MQTT.Client("192.168.3.179", 61614, new Date().getTime().toString());
 	subscriber.onMessageArrived = onMessageArrived;
 	subscriber.connect({onSuccess:onSubscriberConnect});
 });
