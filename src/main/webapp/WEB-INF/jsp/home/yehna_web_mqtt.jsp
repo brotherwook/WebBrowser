@@ -20,85 +20,180 @@
 		<script src="https://code.highcharts.com/highcharts.js"></script>
 		<script src="https://code.highcharts.com/highcharts-more.js"></script>
 		<script src="${pageContext.request.contextPath}/resource/js/speed.js"></script>
-		<style>			
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
 			#moveCar a {
-				margin:5px;
+				margin: 5px;
+			}
+			
+			.arrow-right {
+				width: 0;
+				height: 0;
+				border-top: 30px solid transparent;
+				border-bottom: 30px solid transparent;
+				border-left: 30px solid blue;
+			}
+			
+			.arrow-left {
+				width: 0;
+				height: 0;
+				border-top: 30px solid transparent;
+				border-bottom: 30px solid transparent;
+				border-right: 30px solid blue;
 			}
 		</style>
 	
 		<script>
-			var buzzer_flag;
-			var laser_flag;
-			
 			$(function() {
 				// Publisher Connection
-				publisher = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime().toString());
-				publisher.connect({onSuccess:onPublisherConnect});
-			});			
+				publisher = new Paho.MQTT.Client(location.hostname, 61614,
+						new Date().getTime().toString());
+				publisher.connect({
+					onSuccess : onPublisherConnect
+				});
+			});
 
 			function onPublisherConnect() {
 				console.log("mqtt broker publisher connected");
 			}
 
-			function lcd() {
-				var text = $("#lcd").val();
-				var message = new Paho.MQTT.Message(command);
-				message.destinationName = "/command/servo3";
-				publisher.send(message);
-			}
+			// -------------- Keyboard Pressed --------------
+			$(function() {
+				document.addEventListener('keydown', function(e) {
+					const keyCode = e.keyCode;
+					console.log('pushed key ' + keyCode);
+
+					if (keyCode == 32) { // Space키 - Buzzer 
+						buzzer("on");
+					}
+
+					if (keyCode == 38) { // forward 키
+						forward();
+						if (speed >= 4095)
+							speed = 4095;
+						else
+							speed += 20;
+						setSpeed(speed);
+					}
+
+					if (keyCode == 40) { // backward 키
+						backward();
+						if (speed >= 4095)
+							speed = 4095;
+						else
+							speed += 20;
+						setSpeed(speed);
+					}
+				})
+			})
+
+			// -------------- Keyboard Up --------------
+			$(function() {
+				document.addEventListener('keyup', function(e) {
+					const keyCode = e.keyCode;
+					console.log('pushed key ' + e.key);
+
+					if (keyCode == 32) { // Space키 - Buzzer 
+						buzzer("off");
+					}
+
+					if (keyCode == 38 || keyCode == 40) { // forward, backward 키
+						stop();
+						speed = 1000;
+					}
+				})
+			})
+
+			// -------------- Laser --------------
+			var laser_flag;
 			
-			function button_click(){
+			function laser() {
 				var temp = $("#p1").html();
-				
-				if(laser_flag == "on") {
+
+				if (laser_flag == "on") {
 					laser_flag = "off";
 				} else {
 					laser_flag = "on";
 				}
-				
+
 				var message = new Paho.MQTT.Message(laser_flag);
 				message.destinationName = "/command/laser";
 				publisher.send(message);
-				
-				if(temp == "ON"){
+
+				if (temp == "ON") {
 					$("#p1").html("OFF");
 				} else {
 					$("#p1").html("ON")
 				}
 			}
 
-			function buzzer() {
-				if(buzzer_flag == "on") {
-					buzzer_flag = "off";
-				} else {
-					buzzer_flag = "on";
-				}
+			// -------------- Buzzer --------------
+			function buzzer(flag) {
+				buzzer_flag = flag;
+
 				var buzzer_message = new Paho.MQTT.Message(buzzer_flag);
 				buzzer_message.destinationName = "/command/buzzer";
 				publisher.send(buzzer_message);
 			}
 
-
+			// -------------- DC Motor --------------
+			var speed = 1000;
 			
 			function forward() {
 				var message = new Paho.MQTT.Message("forward");
 				message.destinationName = "/command/direction";
 				publisher.send(message);
 			}
-			
+
 			function backward() {
 				var message = new Paho.MQTT.Message("backward");
 				message.destinationName = "/command/direction";
 				publisher.send(message);
 			}
-			
+
 			function stop() {
 				var message = new Paho.MQTT.Message("stop");
 				message.destinationName = "/command/direction";
 				publisher.send(message);
 			}
+
+			function setSpeed(speed) {
+				var message = new Paho.MQTT.Message(speed.toString());
+				message.destinationName = "/command/speed";
+				publisher.send(message);
+			}
+
+			// -------------- Servo Motor --------------
+			var hcsr_angle = 90;
+			var isPressed = false;
 			
+			function hcsrMotor_down(direction) {
+				hcsr_flag = true;
+					console.log("클릭");
+					if(direction == "left") {
+						if (hcsr_angle >= 180)
+							hcsr_angle = 180;
+						else
+							hcsr_angle += 30;
+					}
+					else if(direction == "right") {
+						if (hcsr_angle <= 0)
+							hcsr_angle = 0;
+						else
+							hcsr_angle -= 30;
+					}
+					else
+						hcsr_angle = 90;
+					
+					var message = new Paho.MQTT.Message(hcsr_angle.toString());
+					message.destinationName = "/command/servo3";
+					publisher.send(message);
+				
+			}
 			
+			function hcsrMotor_up() {
+				hcsr_flag = false;
+			}
 		</script>
 	</head>
 	<body>
@@ -118,19 +213,23 @@
 			<br/>
 			<a id="backward" style="margin-left: 55px;" class="btn btn-warning" onclick="backward()">Backward</a>
 		</div>
-		<br/>
 		
-		<form action="" method="post" onsubmit="lcd()">
-			<input id="lcd" type="text" name="lcd_text" />
-		</form>
-
+		<div class="arrow-left" style="display: inline-block;">
+			<button class="con_link" onmousedown="hcsrMotor_down('left')" onmouseup="hcsrMotor_up()"></button>
+		</div>
+ 
+		<div class="arrow-right" style="display: inline-block; margin-left: 20px;">
+			<button class="con_link" onmousedown="hcsrMotor_down('right')" onmouseup="hcsrMotor_up()"></button>
+		</div>
+		
+		<br/>
 		<form action="" method="post" onsubmit="sendMessage()">
 			<input id="command" type="text" name="command" />
 			<input type="submit" value="전송" />
 		</form>
 		
 		<label class="switch">
-			<input type="checkbox" onclick="button_click()">
+			<input type="checkbox" onclick="laser()">
 			<span class="slider round"></span>
 		</label>
 		<p id="p1">OFF</p>

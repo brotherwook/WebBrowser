@@ -10,8 +10,8 @@ function onMessageArrived(message) {
 	if(message.destinationName == "/camerapub") {
 		$("#cameraView").attr("src", "data:image/jpg;base64, " + message.payloadString);
 	}
+	
 	if(message.destinationName == "/sensor") {
-		console.log("메세지 받는중")
 		sensor = JSON.parse(message.payloadString);
 		$.ajax({
 			type: "POST",
