@@ -15,72 +15,26 @@
 		<script src="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/mqtt_subscriber.js"></script>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/onoffbutton.css">
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/highcharts-more.js"></script>
+		<script src="${pageContext.request.contextPath}/resource/js/speed.js"></script>
 		<style>			
 			#moveCar a {
 				margin:5px;
 			}
 		</style>
+	
 		<script>
 			var buzzer_flag;
 			var laser_flag;
 			
 			$(function() {
-				// Subscriber Connection
-				subscriber = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime().toString());
-				subscriber.onMessageArrived = onMessageArrived;
-				subscriber.connect({onSuccess:onSubscriberConnect});
-				
 				// Publisher Connection
 				publisher = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime().toString());
 				publisher.connect({onSuccess:onPublisherConnect});
-			});
-			
-			// called when a message arrives
-			function onMessageArrived(message) {
-				if(message.destinationName == "/camerapub") {
-					$("#cameraView").attr("src", "data:image/jpg;base64, " + message.payloadString);
-				}
-				if(message.destinationName == "/sensor") {
-					console.log("메세지 받는중")
-					sensor = JSON.parse(message.payloadString);
-					$.ajax({
-						type: "POST",
-						url: "receivedData.do",
-						data: {
-							buzzer : sensor.buzzer,
-							dcmotor_speed : sensor.dcmotor_speed,
-							dcmotor_dir : sensor.dcmotor_dir,
-							gas : sensor.gas,
-							distance : sensor.distance,
-							laser : sensor.laser,
-							photo : sensor.photo,
-							led : sensor.led,
-							servo1 : sensor.servo1,
-							servo2 : sensor.servo2,
-							servo3 : sensor.servo3,
-							servo4 : sensor.servo4,
-							temperature : sensor.temperature,
-							tracker : sensor.tracker
-							},
-						success: function() {
-							
-						}
-					})
-
-					// Buzzer ON/OFF 데이터 전송 받음
-					buzzer_flag = sensor.buzzer;
-					
-					// Laser ON/OFF 데이터 전송 받음
-					laser_flag = sensor.laser;
-				}
-			}
-
-			// called when the client connects
-			function onSubscriberConnect() {
-				console.log("mqtt broker subscriber connected");  
-				subscriber.subscribe("/#");
-			}
+			});			
 
 			function onPublisherConnect() {
 				console.log("mqtt broker publisher connected");
@@ -92,19 +46,26 @@
 				message.destinationName = "/command/servo3";
 				publisher.send(message);
 			}
-
-			
 			
 			function button_click(){
 				var temp = $("#p1").html();
-				console.log(temp);
+				
+				if(laser_flag == "on") {
+					laser_flag = "off";
+				} else {
+					laser_flag = "on";
+				}
+				
+				var message = new Paho.MQTT.Message(laser_flag);
+				message.destinationName = "/command/laser";
+				publisher.send(message);
+				
 				if(temp == "ON"){
 					$("#p1").html("OFF");
 				} else {
 					$("#p1").html("ON")
 				}
 			}
-
 
 			function buzzer() {
 				if(buzzer_flag == "on") {
@@ -117,16 +78,7 @@
 				publisher.send(buzzer_message);
 			}
 
-			function laser() {
-				if(laser_flag == "on") {
-					laser_flag = "off";
-				} else {
-					laser_flag = "on";
-				}
-				var message = new Paho.MQTT.Message(laser_flag);
-				message.destinationName = "/command/laser";
-				publisher.send(message);
-			}
+
 			
 			function forward() {
 				var message = new Paho.MQTT.Message("forward");
@@ -184,5 +136,9 @@
 		<p id="p1">OFF</p>
 		
 		<img id="cameraView" />
+		
+		<figure class="highcharts-figure">
+		    <div id="Speedometer"></div>
+		</figure>
 	</body>
 </html>

@@ -8,11 +8,11 @@ button {
 	margin-bottom: 10px;
 }
 
-#container {
-	margin-bottom: 20px; 
-	padding: 10px; 
-	border-top: 1px solid black;
-}
+/* #container { */
+/* 	margin-bottom: 20px;  */
+/* 	padding: 10px;  */
+/* 	border-top: 1px solid black; */
+/* } */
 
 #div1, .class1 {
 	width: 100px; 
