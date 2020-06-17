@@ -26,6 +26,11 @@ public class HomeController {
 		LOGGER.info("실행");
 		return "home/yehna_web_mqtt";
 	}
+	@RequestMapping("/yehna_highchart.do")
+	public String yehna_highchart() {
+		LOGGER.info("실행");
+		return "home/yehna_highchart";
+	}
 	
 	// ---------- MQTT Subscriber ----------
 	// yehna_web_mqtt에서 json 데이터를 전달 받음
