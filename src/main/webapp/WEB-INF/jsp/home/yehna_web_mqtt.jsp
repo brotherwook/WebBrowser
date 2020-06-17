@@ -214,13 +214,13 @@
 			<a id="backward" style="margin-left: 55px;" class="btn btn-warning" onclick="backward()">Backward</a>
 		</div>
 		
-		<div class="arrow-left" style="display: inline-block;">
-			<button class="con_link" onmousedown="hcsrMotor_down('left')" onmouseup="hcsrMotor_up()"></button>
-		</div>
- 
-		<div class="arrow-right" style="display: inline-block; margin-left: 20px;">
-			<button class="con_link" onmousedown="hcsrMotor_down('right')" onmouseup="hcsrMotor_up()"></button>
-		</div>
+
+		<a class="arrow-left" onmousedown="hcsrMotor_down('left')" onmouseup="hcsrMotor_up()" 
+		style="display: inline-block; margin: 10px"></a>
+
+		<a class="arrow-right" onmousedown="hcsrMotor_down('right')" onmouseup="hcsrMotor_up()" 
+		style="display: inline-block; margin: 10px"></a>
+
 		
 		<br/>
 		<form action="" method="post" onsubmit="sendMessage()">
