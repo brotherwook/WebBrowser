@@ -28,11 +28,6 @@
 			var laser_flag;
 			
 			$(function() {
-				// Subscriber Connection
-				subscriber = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime().toString());
-				subscriber.onMessageArrived = onMessageArrived;
-				subscriber.connect({onSuccess:onSubscriberConnect});
-				
 				// Publisher Connection
 				publisher = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime().toString());
 				publisher.connect({onSuccess:onPublisherConnect});
