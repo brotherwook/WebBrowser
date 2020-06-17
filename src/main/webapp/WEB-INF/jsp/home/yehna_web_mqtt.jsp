@@ -17,7 +17,9 @@
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/mqtt_subscriber.js"></script>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/onoffbutton.css">
-		
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/highcharts-more.js"></script>
+		<script src="${pageContext.request.contextPath}/resource/js/speed.js"></script>
 		<style>			
 			#moveCar a {
 				margin:5px;
@@ -134,5 +136,9 @@
 		<p id="p1">OFF</p>
 		
 		<img id="cameraView" />
+		
+		<figure class="highcharts-figure">
+		    <div id="Speedometer"></div>
+		</figure>
 	</body>
 </html>

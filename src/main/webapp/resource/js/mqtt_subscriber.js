@@ -4,7 +4,7 @@ $(function() {
 	subscriber.onMessageArrived = onMessageArrived;
 	subscriber.connect({onSuccess:onSubscriberConnect});
 });
-	
+
 //called when a message arrives
 function onMessageArrived(message) {
 	if(message.destinationName == "/camerapub") {
