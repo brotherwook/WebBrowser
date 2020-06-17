@@ -71,7 +71,7 @@
 			//------------- MQTT ------------------	
 		
 			$(function(){
-				client = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime.toString());
+				client = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime().toString());
 				client.onMessageArrived = onMessageArrived;
 				client.connect({onSuccess:onConnect});
 			});
@@ -99,7 +99,7 @@
 			// ------------ RGB -------------------------
 			
 			function red() {
-				console.log($("#button1").val())
+				console.log("red")
 				var myObj = {led: $("#button1").val()};
 				var myJSON = JSON.stringify(myObj);
 				message = new Paho.MQTT.Message(myJSON);
@@ -108,7 +108,7 @@
 			}
 			
 			function green() {
-				console.log($("#button2").val())
+				console.log("green")
 				var myObj = {led: $("#button2").val()};
 				var myJSON = JSON.stringify(myObj);
 				message = new Paho.MQTT.Message(myJSON);
@@ -117,8 +117,17 @@
 			}
 			
 			function blue() {
-				console.log($("#button3").val())
+				console.log("blue")
 				var myObj = {led: $("#button3").val()};
+				var myJSON = JSON.stringify(myObj);
+				message = new Paho.MQTT.Message(myJSON);
+				message.destinationName = "/command";
+				client.send(message);
+			}
+			
+			function off() {
+				console.log("off")
+				var myObj = {led: "off"};
 				var myJSON = JSON.stringify(myObj);
 				message = new Paho.MQTT.Message(myJSON);
 				message.destinationName = "/command";
@@ -311,22 +320,36 @@
 			
 			// ---------------------------------------------
 			
+			function rgbcontrol(event) {
+				var key = event.keyCode;
+				if(key == 81) { // q
+					red()
+				}
+				if(key == 87) { // w
+					green()
+				}
+				if(key == 69) { // e
+					blue()
+				}
+			}
+			
+		  	
 		</script>
 	</head>
-	<body>
+	<body id="main" onkeydown="rgbcontrol(event)" onkeyup="off()">
 		<h5 class="alert alert-info">/home/sungjin.jsp</h5>
-		<img id="cameraView"/>
+		<img id="cameraView" style="display:inline-block"/>
 		<input id="sensorView" type="text" value="none">
 		<button id="button1" onclick="red()" value="red">빨강</button>
 		<button id="button2" onclick="green()" value="green">초록</button>
 		<button id="button3" onclick="blue()" value="blue">파랑</button>
-		<figure class="highcharts-figure">
+		<figure class="highcharts-figure" style="display:inline-block">
 			<div id="photoresistor"></div>
 			    <p class="highcharts-description">
 			        Chart showing data updating every second, with old data being removed.
 			    </p>
 		</figure>
-		<figure class="highcharts-figure">
+		<figure class="highcharts-figure" style="display:inline-block">
 			<div id="thermistor"></div>
 			    <p class="highcharts-description">
 			        Chart showing data updating every second, with old data being removed.
