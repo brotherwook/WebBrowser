@@ -14,18 +14,15 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.css">
 		<script src="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
-<<<<<<< HEAD
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/onoffbutton.css">
-=======
 		
 		<style>			
 			#moveCar a {
 				margin:5px;
 			}
 		</style>
-		
->>>>>>> branch 'master' of https://github.com/brotherwook/WebBrowser
+
 		<script>
 			var buzzer_flag;
 			var laser_flag;
@@ -93,19 +90,26 @@
 				message.destinationName = "/command/servo3";
 				publisher.send(message);
 			}
-
-			
 			
 			function button_click(){
 				var temp = $("#p1").html();
-				console.log(temp);
+				
+				if(laser_flag == "on") {
+					laser_flag = "off";
+				} else {
+					laser_flag = "on";
+				}
+				
+				var message = new Paho.MQTT.Message(laser_flag);
+				message.destinationName = "/command/laser";
+				publisher.send(message);
+				
 				if(temp == "ON"){
 					$("#p1").html("OFF");
 				} else {
 					$("#p1").html("ON")
 				}
 			}
-
 
 			function buzzer() {
 				if(buzzer_flag == "on") {
@@ -118,16 +122,7 @@
 				publisher.send(buzzer_message);
 			}
 
-			function laser() {
-				if(laser_flag == "on") {
-					laser_flag = "off";
-				} else {
-					laser_flag = "on";
-				}
-				var message = new Paho.MQTT.Message(laser_flag);
-				message.destinationName = "/command/laser";
-				publisher.send(message);
-			}
+
 			
 			function forward() {
 				var message = new Paho.MQTT.Message("forward");
