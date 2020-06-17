@@ -22,7 +22,7 @@
 				margin:5px;
 			}
 		</style>
-
+	
 		<script>
 			var buzzer_flag;
 			var laser_flag;
@@ -40,7 +40,11 @@
 			
 			// called when a message arrives
 			function onMessageArrived(message) {
+				if(message.destinationName == "/camerapub") {
+					$("#cameraView").attr("src", "data:image/jpg;base64, " + message.payloadString);
+				}
 				if(message.destinationName == "/sensor") {
+					console.log("메세지 받는중")
 					sensor = JSON.parse(message.payloadString);
 					$.ajax({
 						type: "POST",
@@ -76,8 +80,8 @@
 
 			// called when the client connects
 			function onSubscriberConnect() {
-				console.log("mqtt broker subscriber connected");
-				subscriber.subscribe("/sensor");
+				console.log("mqtt broker subscriber connected");  
+				subscriber.subscribe("/#");
 			}
 
 			function onPublisherConnect() {
@@ -142,6 +146,7 @@
 				publisher.send(message);
 			}
 			
+			
 		</script>
 	</head>
 	<body>
@@ -177,5 +182,7 @@
 			<span class="slider round"></span>
 		</label>
 		<p id="p1">OFF</p>
+		
+		<img id="cameraView" />
 	</body>
 </html>
