@@ -15,7 +15,7 @@
 		<script src="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/mqtt_subscriber.js"></script>
+		<script src="${pageContext.request.contextPath}/resource/js/mqtt_subscriber.js"></script>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/onoffbutton.css">
 		<script src="https://code.highcharts.com/highcharts.js"></script>
 		<script src="https://code.highcharts.com/highcharts-more.js"></script>
