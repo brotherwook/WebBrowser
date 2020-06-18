@@ -105,28 +105,29 @@
 			})
 			$(function(){
 				console.log('event ready')
-		  		document.addEventListener('keydown', function(e){
-			    const keyCode = e.keyCode;
-			    if(keyCode == 87){ // w
-			    	cameraMoveUp()
-			    } else if(keyCode == 83){ // s
-			    	cameraMoveDown()
-			    } else if(keyCode == 65){ // a
-			    	cameraMoveLeft()
-			    } else if(keyCode == 68){ // d
-			    	cameraMoveRight()
-			    } else if(keyCode == 82){ // r(카메라 중앙정렬)
-			    	cameraMoveCenter()
-			    } else if(keyCode == 49){ // 1 red
-			    	ledred()
-			    } else if(keyCode == 50){ // 2 green
-			    	ledgreen()
-			    } else if(keyCode == 51){ // 3 blue
-			    	ledblue()
-			    } else if(keyCode == 52){ // 4(off)
-			    	ledoff()
-			    }
-			  })
+		  		document.addEventListener('keydown', function(e) {
+				    const keyCode = e.keyCode;
+				    
+				    if(keyCode == 87){ // w
+				    	cameraMoveUp()
+				    } else if(keyCode == 83){ // s
+				    	cameraMoveDown()
+				    } else if(keyCode == 65){ // a
+				    	cameraMoveLeft()
+				    } else if(keyCode == 68){ // d
+				    	cameraMoveRight()
+				    } else if(keyCode == 82){ // r(카메라 중앙정렬)
+				    	cameraMoveCenter()
+				    } else if(keyCode == 49){ // 1 red
+				    	ledred()
+				    } else if(keyCode == 50){ // 2 green
+				    	ledgreen()
+				    } else if(keyCode == 51){ // 3 blue
+				    	ledblue()
+				    } else if(keyCode == 52){ // 4(off)
+				    	ledoff()
+				    }
+				})
 			})
 			
 			function onConnect() {

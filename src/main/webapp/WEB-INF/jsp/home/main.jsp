@@ -32,6 +32,8 @@
 			<li><a href="yehna_web_mqtt.do">yehna_web_mqtt.do</a></li>
 			<li><a href="yehna_highchart.do">yehna_highchart.do</a></li>
 			<li><a href="sungjin.do">sungjin.do</a></li>
+			<li><a href="ui_test.do">ui_test.do</a></li>
+			<li><a href="drivepage.do">drivepage.do</a></li>
 		</ul>
 	</body>
 </html>

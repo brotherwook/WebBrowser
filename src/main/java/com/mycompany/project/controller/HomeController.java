@@ -31,6 +31,11 @@ public class HomeController {
 		LOGGER.info("실행");
 		return "home/yehna_highchart";
 	}
+	@RequestMapping("/ui_test.do")
+	public String ui_test() {
+		LOGGER.info("실행");
+		return "home/ui_test";
+	}
 	
 	// ---------- MQTT Subscriber ----------
 	// yehna_web_mqtt에서 json 데이터를 전달 받음
@@ -72,5 +77,10 @@ public class HomeController {
 		return "home/sungjin";
 	}
 	
-	// --------------------------------------
+	// --------------김형욱----------------------
+	@RequestMapping("/drivepage.do")
+	public String drivepage() {
+		LOGGER.info("실행");
+		return "home/drivepage";
+	}
 }
