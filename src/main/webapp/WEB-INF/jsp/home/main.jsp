@@ -34,6 +34,8 @@
 			<li><a href="sungjin.do">sungjin.do</a></li>
 			<li><a href="ui_test.do">ui_test.do</a></li>
 			<li><a href="drivepage.do">drivepage.do</a></li>
+			<li><a href="jujeonMain.do">jujeonMain.do</a></li>
+			
 		</ul>
 	</body>
 </html>

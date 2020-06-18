@@ -1,6 +1,7 @@
 // 속력 하이차트
+var speedchart
 $(function(){
-	Highcharts.chart('Speedometer', {
+	 speedchart= Highcharts.chart('Speedometer', {
 
 	    chart: {
 	        type: 'gauge',
@@ -93,23 +94,20 @@ $(function(){
 	        }
 	    }]
 
-	},
-	// Add some life
-	function (chart) {
-	    if (!chart.renderer.forExport) {
-	        setInterval(function () {
-	            var point = chart.series[0].points[0],
-	                newVal,
-	                inc = Math.round(sensor.dcmotor_speed/20.475);
-
-	            newVal = inc;
-	            if (newVal < 0 || newVal > 200) {
-	                newVal = point.y - inc;
-	            }
-
-	            point.update(newVal);
-
-	        }, 10);
-	    }
 	});
+});
+
+$(function(){
+	setInterval(function () {
+	    var point = speedchart.series[0].points[0],
+	        newVal
+	    try{
+	        inc = sensor.dcmotor_speed;
+	    } catch(e){
+	    	inc=0;
+	    }
+	    newVal = Math.round(inc/20.475);
+	    point.update(newVal);
+	
+	}, 10);
 });
