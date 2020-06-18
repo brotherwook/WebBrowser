@@ -94,20 +94,22 @@ $(function(){
 	        }
 	    }]
 
+	},
+	function (speedchart) {
+	    if (!speedchart.renderer.forExport) {
+	    	setInterval(function () {
+	    	    var point = speedchart.series[0].points[0],
+	    	        newVal
+	    	    try{
+	    	        inc = sensor.dcmotor_speed;
+	    	    } catch(e){
+	    	    	inc=0;
+	    	    }
+	    	    newVal = Math.round(inc/20.475);
+	    	    point.update(newVal);
+	    	
+	    	}, 100);
+	    }
 	});
 });
 
-$(function(){
-	setInterval(function () {
-	    var point = speedchart.series[0].points[0],
-	        newVal
-	    try{
-	        inc = sensor.dcmotor_speed;
-	    } catch(e){
-	    	inc=0;
-	    }
-	    newVal = Math.round(inc/20.475);
-	    point.update(newVal);
-	
-	}, 10);
-});

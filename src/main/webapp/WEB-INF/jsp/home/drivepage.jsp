@@ -48,7 +48,7 @@
 				margin: 5px;
 			}
 		</style>
-		<!-- Custom styles for this template -->
+		<!-- css Layout -->
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/cover.css">
 
 		<script src="https://code.highcharts.com/highcharts.js"></script>
@@ -80,34 +80,46 @@
 		  		document.addEventListener('keydown', function(e) {
 				    const keyCode = e.keyCode;
 				    console.log(keyCode);
-				    if (keyCode == 32) { // Space키 - Buzzer 
-						buzzer("on");
-					}
-
-					if (keyCode == 38) { // forward 키
-						forward();
-					} else if (keyCode == 40) { // backward 키
-						backward();
-					}
-					
-				    if(keyCode == 87){ // w
-				    	cameraMoveUp()
-				    } else if(keyCode == 83){ // s
-				    	cameraMoveDown()
-				    } else if(keyCode == 65){ // a
-				    	cameraMoveLeft()
-				    } else if(keyCode == 68){ // d
-				    	cameraMoveRight()
-				    } else if(keyCode == 82){ // r(카메라 중앙정렬)
-				    	cameraMoveCenter()
-				    } else if(keyCode == 49){ // 1 red
-				    	ledred()
-				    } else if(keyCode == 50){ // 2 green
-				    	ledgreen()
-				    } else if(keyCode == 51){ // 3 blue
-				    	ledblue()
-				    } else if(keyCode == 52){ // 4(off)
-				    	ledoff()
+				    
+				    switch(keyCode){
+				    case 32:
+				    	buzzer("on");
+				    	break;
+				    case 38:
+				    	forward();
+				    	break;
+				    case 40:
+				    	backward();
+				    	break;
+				    case 87:
+				    	cameraMoveUp();
+				    	break;
+				    case 83:
+				    	cameraMoveDown();
+				    	break;
+				    case 65:
+				    	cameraMoveLeft();
+				    	break;
+				    case 68:
+				    	cameraMoveRight();
+				    	break;
+				    case 82:
+				    	cameraMoveCenter();
+				    	break;
+				    case 49:
+				    	ledred();
+				    	break;
+				    case 50:
+				    	ledgreen();
+				    	break;
+				    case 51:
+				    	ledblue();
+				    	break;
+				    case 52:
+				    	ledoff();
+				    	break;
+				    default:
+				    	console.log("nothing");
 				    }
 				})
 			})

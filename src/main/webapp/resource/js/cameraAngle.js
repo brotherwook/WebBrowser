@@ -1,6 +1,5 @@
-var cameraAngleChart
 $(function(){
-	cameraAngleChart = Highcharts.chart('container', {
+				Highcharts.chart('container', {
 	    chart: {
 	      type: 'gauge',
 	      plotBorderWidth: 1,
@@ -98,16 +97,18 @@ $(function(){
 	      yAxis: 1
 	    }]
 
-	  });
-});
+	  },
 
-setInterval(function() {
-	if (cameraAngleChart.series) { // the chart may be destroyed
-		var left = cameraAngleChart.series[0].points[0],
-		  	right = cameraAngleChart.series[1].points[0];
-	 	
-		left.update((Number(value.servo2)-90)*(-1), false);
-		right.update(Number(value.servo1)-30, false);
-		cameraAngleChart.redraw();
-	}
-}, 500);
+	  function(chart) {
+		setInterval(function() {
+			if (chart.series) { // the chart may be destroyed
+				var left = chart.series[0].points[0],
+				  	right = chart.series[1].points[0];
+			 	
+				left.update((sensor.servo2-90)*(-1), false);
+				right.update((sensor.servo1)-30, false);
+				chart.redraw();
+			}
+		}, 500);
+	});
+})

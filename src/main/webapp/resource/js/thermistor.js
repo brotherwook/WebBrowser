@@ -1,5 +1,5 @@
 $(function(){
-				Highcharts.chart('thermistor', {
+	Highcharts.chart('thermistor', {
 	    chart: {
 	        type: 'spline',
 	        animation: Highcharts.svg, // don't animate in old IE
@@ -11,7 +11,7 @@ $(function(){
 	                var series = this.series[0];
 	                setInterval(function () {
 	                    var x = (new Date()).getTime(), // current time
-	                        y = Number(value.temperature)
+	                        y = Number(sensor.temperature)
 	                    series.addPoint([x, y], true, true);
 	                }, 1000);
 	            }
@@ -24,19 +24,6 @@ $(function(){
 	
 	    title: {
 	        text: 'Thermistor : Temperature'
-	    },
-	
-	    accessibility: {
-	        announceNewData: {
-	            enabled: true,
-	            minAnnounceInterval: 15000,
-	            announcementFormatter: function (allSeries, newSeries, newPoint) {
-	                if (newPoint) {
-	                    return 'New point added. Value: ' + newPoint.y;
-	                }
-	                return false;
-	            }
-	        }
 	    },
 	
 	    xAxis: {
@@ -76,10 +63,10 @@ $(function(){
 	                time = (new Date()).getTime(),
 	                i;
 	
-	            for (i = -19; i <= 0; i += 1) {
+	            for (i = -10; i <= 0; i += 1) {
 	                data.push({
 	                    x: time + i * 1000,
-	                    y: Math.random()
+	                    y: 0
 	                });
 	            }
 	            return data;
