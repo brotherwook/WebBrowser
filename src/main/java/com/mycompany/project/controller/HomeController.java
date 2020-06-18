@@ -83,10 +83,18 @@ public class HomeController {
 		LOGGER.info("실행");
 		return "home/drivepage";
 	}
-	
+
 	@RequestMapping("/sensingpage.do")
 	public String sensingpage() {
 		LOGGER.info("실행");
 		return "home/sensingpage";
 	}
+
+	// --------------주상민----------------------
+	@RequestMapping("/jujeonMain.do")
+	public String jujeonMain() {
+		LOGGER.info("실행");
+		return "home/jujeonMain";
+	}
+
 }
