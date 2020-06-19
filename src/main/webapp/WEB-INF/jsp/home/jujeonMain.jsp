@@ -24,7 +24,7 @@
 		<script src="https://code.highcharts.com/js/themes/dark-unica.js"></script>
 		<script>
 			var sensorValues;
-			var sensorValue;
+			var gasValue;
 			$(function(){
 			client = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime().toString())
 			client.onMessageArrived = onMessageArrived;
@@ -37,8 +37,8 @@
 				}
 				if(message.destinationName =="/sensor"){
 					sensorValues = JSON.parse(message.payloadString);
-					sensorValue = sensorValues["gasValue"];
-					console.log(sensorValue);
+					gasValue = sensorValues["gasValue"];
+					console.log(gasValue);
 				}
 				
 			}
