@@ -272,9 +272,9 @@
 		<div id="moveCar" style="margin-top: 20px;">
 			<a id="forward" style="margin-left: 60px;" class="btn btn-warning" onclick="forward()">Forward</a>
 			<br/>
-			<a id="left" class="btn btn-warning" onclick="left()">Left</a>
+			<a id="left" class="btn btn-warning" onclick="keyPressOrder(37)">Left</a>
 			<a id="stop" class="btn btn-secondary" onclick="stop()">Stop</a>
-			<a id="right" class="btn btn-warning" onclick="right()">Right</a>
+			<a id="right" class="btn btn-warning" onclick="keyPressOrder(39)">Right</a>
 			<br/>
 			<a id="backward" style="margin-left: 55px;" class="btn btn-warning" onclick="backward()">Backward</a>
 		</div>
