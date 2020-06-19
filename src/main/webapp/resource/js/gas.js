@@ -1,6 +1,6 @@
 $(function(){
 	Highcharts.chart('container', {
-	  chart: {
+		chart: {
 	    type: 'spline',
 	    animation: Highcharts.svg, // don't animate in old IE
 	    marginRight: 10,
@@ -11,7 +11,7 @@ $(function(){
 	        var series = this.series[0];
 	        setInterval(function () {
 	          var x = (new Date()).getTime(), // current time
-	            y = gasValue;
+	            y = sensor.gas;
 	          series.addPoint([x, y], true, true);
 	        }, 1000);
 	      }
@@ -79,11 +79,12 @@ $(function(){
 	      for (i = -19; i <= 0; i += 1) {
 	        data.push({
 	          x: time + i * 1000,
-	          y: gasValue
+	          y: 0
 	        });
 	      }
 	      return data;
 	    }())
 	  }]
 	});
+	
 });

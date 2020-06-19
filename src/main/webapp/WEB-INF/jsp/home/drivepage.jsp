@@ -6,10 +6,10 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author"	content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-		<meta name="generator" content="Jekyll v4.0.1">
+<!-- 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
+<!-- 		<meta name="description" content=""> -->
+<!-- 		<meta name="author"	content="Mark Otto, Jacob Thornton, and Bootstrap contributors"> -->
+<!-- 		<meta name="generator" content="Jekyll v4.0.1"> -->
 		<meta charset="UTF-8">
 		<title>Insert title here</title>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/bootstrap/css/bootstrap.min.css">
@@ -26,7 +26,7 @@
 		<title>Cover Template · Bootstrap</title>
 		
 		<!-- Bootstrap core CSS -->
-		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/assets/dist/css/bootstrap.css">
+<%-- 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/assets/dist/css/bootstrap.css"> --%>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/highchart.css">
 		<style>
 			.bd-placeholder-img {
@@ -49,7 +49,7 @@
 			}
 		</style>
 		<!-- css Layout -->
-		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/cover.css">
+<%-- 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/cover.css"> --%>
 
 		<script src="https://code.highcharts.com/highcharts.js"></script>
 		<script src="https://code.highcharts.com/highcharts-more.js"></script>
@@ -118,12 +118,30 @@
 				    case 52:
 				    	ledoff();
 				    	break;
+				    case 37:
+				    	keyPressOrder(37)
+				    	break;
+				    case 39:
+				    	keyPressOrder(39)
+				    	break;
+				    case 97:
+				    	keyPressOrder(97)
+				    	break;
+				    case 13:
+				    	keyPressOrder(13)
+				    	break;
 				    default:
 				    	console.log("nothing");
 				    }
 				})
 			})
 			
+			function keyPressOrder(keyCode){
+		
+				message = new Paho.MQTT.Message(String(keyCode));
+				message.destinationName = "/command/order"
+				client.send(message);
+			}
 			// -------------- Keyboard Up --------------
 			$(function() {
 				document.addEventListener('keyup', function(e) {

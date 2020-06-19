@@ -22,6 +22,7 @@
 		<script src="${pageContext.request.contextPath}/resource/js/photoresistor.js"></script>
 		<script src="${pageContext.request.contextPath}/resource/js/thermistor.js"></script>
 		<script src="${pageContext.request.contextPath}/resource/js/distance.js"></script>
+		<script src="${pageContext.request.contextPath}/resource/js/gas.js"></script>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/highchart.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
@@ -108,7 +109,12 @@
 	
 		<div>
 		<!-- 가스 하이차트 -->
-		<!-- 형 코드가 왜없지...? -->
+			<figure class="highcharts-figure">
+				<div id="container"></div>
+					<p class="highcharts-description">
+						Chart showing data updating every second, with old data being removed.
+					</p>
+			</figure>
 		</div>
 		<div>
 		<!-- 초음파 하이차트 -->
