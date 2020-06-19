@@ -15,7 +15,16 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.css">
 		<script src="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+		<script src="${pageContext.request.contextPath}/resource/js/gas.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/gas.css">	
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<script src="https://code.highcharts.com/modules/export-data.js"></script>
+		<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+		<script src="https://code.highcharts.com/js/themes/dark-unica.js"></script>
 		<script>
+			var sensorValues;
+			var sensorValue;
 			$(function(){
 			client = new Paho.MQTT.Client(location.hostname, 61614, new Date().getTime().toString())
 			client.onMessageArrived = onMessageArrived;
@@ -25,6 +34,11 @@
 				if(message.destinationName == "/camerapub"){
 					var cameraView = $("#cameraView").attr(
 							"src", "data:image/jpg;base64,"+message.payloadString);
+				}
+				if(message.destinationName =="/sensor"){
+					sensorValues = JSON.parse(message.payloadString);
+					sensorValue = sensorValues["gasValue"];
+					console.log(sensorValue);
 				}
 				
 			}
@@ -63,5 +77,10 @@
 			<button onclick="sendMessage()" class="btn btn-success btn-sm">전송</button>
 		</form>
 		<img id="cameraView"/>
+		<figure class="highcharts-figure">
+			<div id="container"></div>
+			<p class="highcharts-description">
+			</p>
+		</figure>
 	</body>
 </html>

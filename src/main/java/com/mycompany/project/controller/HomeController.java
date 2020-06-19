@@ -96,5 +96,6 @@ public class HomeController {
 		LOGGER.info("실행");
 		return "home/jujeonMain";
 	}
+	
 
 }
