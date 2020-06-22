@@ -140,7 +140,7 @@
 		
 				message = new Paho.MQTT.Message(String(keyCode));
 				message.destinationName = "/command/order"
-				client.send(message);
+				publisher.send(message);
 			}
 			// -------------- Keyboard Up --------------
 			$(function() {
