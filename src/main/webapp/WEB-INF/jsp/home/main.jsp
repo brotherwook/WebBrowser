@@ -38,7 +38,6 @@
 			<li><a href="jujeonMain.do">jujeonMain.do</a></li>
 			<li><a href="page1.do">page1.do</a></li>
 			<li><a href="page2.do">page2.do</a></li>
-			<li><a href="page3.do">page3.do</a></li>
 			<li><a href="test.do">test.do</a></li>
 		</ul>
 	</body>

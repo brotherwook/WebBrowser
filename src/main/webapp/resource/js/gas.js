@@ -11,7 +11,7 @@ $(function(){
 	                var series = this.series[0];
 	                setInterval(function () {
 	                    var x = (new Date()).getTime(), // current time
-	                        y = Math.random();
+	                        y = parseInt(sensor.gas);
 	                    series.addPoint([x, y], true, true);
 	                }, 1000);
 	            }
@@ -69,6 +69,7 @@ $(function(){
 	    },
 
 	    series: [{
+	    	color: "#08a7f9",
 	        name: 'Random data',
 	        data: (function () {
 	            // generate an array of random data
@@ -79,7 +80,7 @@ $(function(){
 	            for (i = -19; i <= 0; i += 1) {
 	                data.push({
 	                    x: time + i * 1000,
-	                    y: Math.random()
+	                    y: 0
 	                });
 	            }
 	            return data;

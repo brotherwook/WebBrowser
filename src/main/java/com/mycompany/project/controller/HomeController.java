@@ -80,13 +80,13 @@ public class HomeController {
 	@RequestMapping("/page1.do")
 	public String page1() {
 		LOGGER.info("실행");
-		return "home/test/page1";
+		return "home/sungjin/page1";
 	}
 	
 	@RequestMapping("/page2.do")
 	public String page2() {
 		LOGGER.info("실행");
-		return "home/test/page2";
+		return "home/sungjin/page2";
 	}
 	
 	@RequestMapping("/page3.do")
