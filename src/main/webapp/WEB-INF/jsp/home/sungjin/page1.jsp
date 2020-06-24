@@ -29,8 +29,7 @@
 <script
 			src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"
 			type="text/javascript"></script>
-<script
-	src="${pageContext.request.contextPath}/resource/js/mqtt.js"></script>
+<script src="${pageContext.request.contextPath}/resource/js/mqtt_subscriber.js"></script>
 <!-- MQTT end -->
 
 <!-- HighCharts -->
@@ -55,17 +54,389 @@
 
 <!-- Angles and sensors -->
 		<!-- Highcharts -->
-<script src="${pageContext.request.contextPath}/resource/js/speed_direction.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/resource/js/speed_direction.js"></script> --%>
 <script src="${pageContext.request.contextPath}/resource/js/camera_direction.js"></script>
 
 <script src="${pageContext.request.contextPath}/resource/js/ultrasonic_direction.js"></script>
 
 <script>
+//---------------- publisher ----------------
+$(function() {
+	// Publisher Connection
+	publisher = new Paho.MQTT.Client("192.168.3.179", 61614,
+			new Date().getTime().toString());
+	publisher.connect({
+		onSuccess : onPublisherConnect
+	});
+});
+
+function onPublisherConnect() {
+	console.log("mqtt broker publisher connected");
+}
+
+// -------------- Keyboard Pressed --------------
+var keyset = [];
+$(function(){
+	console.log('event ready')
+		document.addEventListener('keydown', function(e) {
+	    const keyCode = e.keyCode;
+	    console.log(keyCode);
+	  
+	    keyset[keyCode] = true;
+	})
+	
+})
+
+
+ setInterval(function () {
+	    if(keyset[32]){
+	    	buzzer("on");
+	    	console.log("32 눌림")
+	    }
+	    if(keyset[38]){
+	    	forward();
+	    	console.log("38 눌림")
+	    }
+	    if(keyset[40]){
+	    	backward();
+	    }
+	    if(keyset[87]){
+	    	cameraMoveUp();
+	    }
+	    if(keyset[83]){
+	    	cameraMoveDown()
+	    }
+	    if(keyset[65]){
+	    	cameraMoveLeft();
+	    }
+	    if(keyset[68]){
+	    	cameraMoveRight();
+	    }
+	    if(keyset[82]){
+	    	cameraMoveCenter();
+	    }
+	    if(keyset[49]){
+	    	ledred("on");
+	    }
+	    if(keyset[50]){
+	    	ledgreen("on");
+	    }
+	    if(keyset[51]){
+	    	ledblue("on");
+	    }
+	    if(keyset[52]){
+	    	ledoff("all");
+	    }
+	    if(keyset[37]){
+	    	keyPressOrder(37)
+	    }
+	    if(keyset[39]){
+	    	keyPressOrder(39)
+	    }
+	    if(keyset[97]){
+	    	keyPressOrder(97)
+	    }
+	    if(keyset[13]){
+	    	keyPressOrder(13)
+	    }
+        }, 150);
+
+function keyPressOrder(keyCode){
+
+	message = new Paho.MQTT.Message(String(keyCode));
+	message.destinationName = "/command/order"
+	publisher.send(message);
+}
+// -------------- Keyboard Up --------------
+$(function() {
+	document.addEventListener('keyup', function(e) {
+		const keyCode = e.keyCode;
+		console.log('pushed key ' + e.key);
+		
+		keyset[keyCode] = false;
+		if (keyCode == 32) { // Space키 - Buzzer 
+			buzzer("off");
+			
+		}
+
+		if (keyCode == 38 || keyCode == 40) { // forward, backward 키
+			stop();
+		}
+		
+	})
+})
+
+// -------------- Buzzer --------------
+function buzzer(flag) {
+	buzzer_flag = flag;
+	console.log(flag)
+	var temp = $("#p2").html();
+	
+	if(flag == "on") {
+		$("#p2").html("ON");
+		$("#buzzerbox").prop("checked", true);
+	} else if(flag == "off"){
+		$("#p2").html("OFF");
+		$("#buzzerbox").prop("checked", false);
+	}
+	else {
+		if(temp == "OFF"){
+			$("#p2").html("ON");
+			buzzer_flag="on"
+		} else {
+			$("#p2").html("OFF");
+			buzzer_flag="off"
+		}
+
+	}
+	
+	var buzzer_message = new Paho.MQTT.Message(buzzer_flag);
+	buzzer_message.destinationName = "/command/buzzer";
+	publisher.send(buzzer_message);
+	
+}
+
+// -------------- DC Motor --------------
+var speed = 1000;
+
+function forward() {
+	if (speed >= 4095)
+		speed = 4095;
+	else
+		speed += 20;
+	setSpeed(speed);
+	
+	var message = new Paho.MQTT.Message("forward");
+	message.destinationName = "/command/direction";
+	publisher.send(message);
+}
+
+function backward() {
+	if (speed >= 4095)
+		speed = 4095;
+	else
+		speed += 20;
+	setSpeed(speed);
+	
+	var message = new Paho.MQTT.Message("backward");
+	message.destinationName = "/command/direction";
+	publisher.send(message);
+}
+
+function stop() {
+	var message = new Paho.MQTT.Message("stop");
+	message.destinationName = "/command/direction";
+	publisher.send(message);
+	speed = 1000;
+}
+
+function setSpeed(speed) {
+	var message = new Paho.MQTT.Message(speed.toString());
+	message.destinationName = "/command/speed";
+	publisher.send(message);
+}
+
+// ------------------ 카메라 서보 --------------
+function cameraMoveUp(){
+	message = new Paho.MQTT.Message("CameraUp");
+    message.destinationName = "/command";
+    console.log("CameraUp")
+    publisher.send(message);
+}
+function cameraMoveDown(){
+	message = new Paho.MQTT.Message("CameraDown");
+    message.destinationName = "/command";
+    console.log("CameraDown")
+    publisher.send(message);
+}
+function cameraMoveLeft(){
+	message = new Paho.MQTT.Message("CameraLeft");
+    message.destinationName = "/command";
+    console.log("CameraLeft")
+    publisher.send(message);
+}
+function cameraMoveRight(){
+	message = new Paho.MQTT.Message("CameraRight");
+    message.destinationName = "/command";
+    console.log("CameraRight")
+    publisher.send(message);
+}
+function cameraMoveCenter(){
+	message = new Paho.MQTT.Message("CameraCenter");
+    message.destinationName = "/command";
+    console.log("CameraCenter")
+    publisher.send(message);
+}
+
+// -------------- Laser --------------
+var laser_flag;
+
+function laser() {
+	var temp = $("#p1").html();
+
+	if (laser_flag == "on") {
+		laser_flag = "off";
+	} else {
+		laser_flag = "on";
+	}
+
+	var message = new Paho.MQTT.Message(laser_flag);
+	message.destinationName = "/command/laser";
+	publisher.send(message);
+
+	if (temp == "ON") {
+		$("#p1").html("OFF");
+	} else {
+		$("#p1").html("ON")
+	}
+}
+
+// ------------------ led -----------------
+function ledred(flag) {
+
+	var temp = $("#p3").html();
+	
+	if(flag == "on") {
+		$("#p3").html("ON");
+		$("#ledredbox").prop("checked", true);
+		ledoff("green");
+		ledoff("blue");
+	} else{
+		if(temp == "OFF"){
+			$("#p3").html("ON");
+			ledoff("green");
+			ledoff("blue");
+		} else {
+			$("#p3").html("OFF");
+			ledoff();
+			return;
+		}
+	}
+
+	message = new Paho.MQTT.Message('LedRed');
+	message.destinationName = "/command";
+	console.log("red")
+	publisher.send(message);
+}
+
+function ledgreen(flag) {
+	
+	var temp = $("#p4").html();
+	
+	if(flag == "on") {
+		$("#p4").html("ON");
+		$("#ledgreenbox").prop("checked", true);
+		ledoff("red");
+		ledoff("blue");
+	} else{
+		if(temp == "OFF"){
+			$("#p4").html("ON");
+			ledoff("red");
+			ledoff("blue");
+		} else {
+			$("#p4").html("OFF");
+			ledoff('green');
+			return;
+		}
+	}
+	
+	console.log("green")
+	message = new Paho.MQTT.Message('LedGreen');
+	message.destinationName = "/command";
+	publisher.send(message);
+}
+
+function ledblue(flag) {
+	
+	var temp = $("#p5").html();
+	
+	if(flag == "on") {
+		$("#p5").html("ON");
+		$("#ledbluebox").prop("checked", true);
+		ledoff("green");
+		ledoff("red");
+	} else{
+		if(temp == "OFF"){
+			$("#p5").html("ON");
+			ledoff("green");
+			ledoff("red");
+		} else {
+			$("#p5").html("OFF");
+			ledoff('blue');
+			return;
+		}
+	}
+	
+	console.log("blue")
+	message = new Paho.MQTT.Message('LedBlue');
+	message.destinationName = "/command";
+	publisher.send(message);
+}
+
+function ledoff(flag) {
+	
+	if(flag == "all"){
+		$("#p3").html("OFF");
+		$("#ledredbox").prop("checked", false);
+		$("#p4").html("OFF");
+		$("#ledgreenbox").prop("checked", false);
+		$("#p5").html("OFF");
+		$("#ledbluebox").prop("checked", false);
+	} else if(flag == "red"){
+		$("#p3").html("OFF");
+		$("#ledredbox").prop("checked", false);
+	} else if(flag == "green"){
+		$("#p4").html("OFF");
+		$("#ledgreenbox").prop("checked", false);
+	} else if(flag == "blue"){
+		$("#p5").html("OFF");
+		$("#ledbluebox").prop("checked", false);
+	}
+	console.log("Ledoff")
+	message = new Paho.MQTT.Message('LedOff');
+	message.destinationName = "/command";
+	publisher.send(message);
+}
+
 function LcdContentSend() {
 			var str1 = $("#input1").val()
 			var str2 = $("#input2").val()
 			
 			//LCD로 전달
+			console.log("LCD1 전달")
+			message = new Paho.MQTT.Message(str1);
+			message.destinationName = "/command/lcd1";
+			publisher.send(message);
+			
+			console.log("LCD2 전달")
+			message = new Paho.MQTT.Message(str2);
+			message.destinationName = "/command/lcd2";
+			publisher.send(message);
+}
+
+// ------------------- UltraSonic ------------------------
+var hcsr_angle = 90;
+
+function hcsrMotor_down(direction) {
+	if(direction == "left") {
+		if (hcsr_angle >= 180)
+			hcsr_angle = 180;
+		else
+			hcsr_angle += 30;
+	}
+	else if(direction == "right") {
+		if (hcsr_angle <= 0)
+			hcsr_angle = 0;
+		else
+			hcsr_angle -= 30;
+	}
+	else
+		hcsr_angle = 90;
+	
+	var message = new Paho.MQTT.Message(hcsr_angle.toString());
+	message.destinationName = "/command/servo3";
+	publisher.send(message);
+
 }
 </script>
 </head>
@@ -138,41 +509,40 @@ function LcdContentSend() {
 						<!-- Rounded switch -->
 						<p>Laser Emitter</p>
 						<label class="switch">
-						  <input type="checkbox">
+						  <input type="checkbox" onclick="laser()">
 						  <span class="slider round"></span>
 						</label>
+						<p id="p1">OFF</p>
 						<!-- Rounded switch -->
 						<p>Active Buzzer</p>
 						<label class="switch">
-						  <input type="checkbox">
+						  <input id="buzzerbox" type="checkbox" onclick="buzzer('button')">
 						  <span class="slider round"></span>
 						</label>
-						<!-- Rounded switch -->
-						<p>Laser Emitter</p>
-						<label class="switch">
-						  <input type="checkbox">
-						  <span class="slider round"></span>
-						</label>
+						<p id="p2">OFF</p>
 						<!-- Rounded switch -->
 						<p class="text-white">Led Red</p>
 						<label class="switch">
-						  <input type="checkbox">
+						  <input id="ledredbox" type="checkbox" onclick="ledred('button')">
 						  <span class="slider round"></span>
 						</label>
+						<p id="p3">OFF</p>
 						<!-- Rounded switch -->
 						<p>Led Green</p>
 						<label class="switch">
-						  <input type="checkbox">
+						  <input id="ledgreenbox" type="checkbox" onclick="ledgreen('button')">
 						  <span class="slider round"></span>
 						</label>
+						<p id="p4">OFF</p>
 						<!-- Rounded switch -->
 						<p>Led Blue</p>
 						<label class="switch">
-						  <input type="checkbox">
+						  <input id="ledbluebox" type="checkbox" onclick="ledblue('button')">
 						  <span class="slider round"></span>
 						</label>
+						<p id="p5">OFF</p>
+						
 						<p>LCD</p>
-						 
 						  <div class="form-group">
 						    <input type="text" class="form-control" id="input1">
 						  </div>
@@ -208,7 +578,7 @@ function LcdContentSend() {
 					      <tr>
 					        <td></td>
 					        <td> <!-- 카메라 up -->
-					        	<a>
+					        	<a onclick="cameraMoveUp()">
 						        	<svg class="bi bi-chevron-up text-white" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 									  <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
 									</svg>
@@ -217,7 +587,7 @@ function LcdContentSend() {
 					        <td></td>
 					        <td></td>
 					        <td> <!-- DCMotor forward -->
-					        	<a>
+					        	<a onclick="forward()">
 					        		<svg class="bi bi-arrow-up text-white" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 									  <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
 									  <path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8 3.707 5.354 6.354a.5.5 0 1 1-.708-.708l3-3z"/>
@@ -231,14 +601,14 @@ function LcdContentSend() {
 					      </tr>
 					      <tr>
 					        <td> <!-- 카메라 left -->
-					        	<a>
+					        	<a onclick="cameraMoveLeft()">
 					        		<svg class="bi bi-chevron-left text-white" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 									  <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
 									</svg>
 					        	</a>
 					        </td>
 					        <td> <!-- 카메라 정렬 -->
-					        	<a>
+					        	<a onclick="cameraMoveCenter()">
 					        		<svg class="bi bi-plus-circle text-white" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 									  <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
 									  <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
@@ -247,14 +617,14 @@ function LcdContentSend() {
 					        	</a>
 					        </td>
 					        <td> <!-- 카메라 right -->
-					        	<a>
+					        	<a onclick="cameraMoveRight()">
 					        		<svg class="bi bi-chevron-right text-white" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 									  <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
 									</svg>
 					        	</a>
 					        </td>
 					        <td> <!-- Front Tire left -->
-					        	<a>
+					        	<a onclick="keyPressOrder(37)">
 					        		<svg class="bi bi-arrow-left text-white" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 									  <path fill-rule="evenodd" d="M5.854 4.646a.5.5 0 0 1 0 .708L3.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0z"/>
 									  <path fill-rule="evenodd" d="M2.5 8a.5.5 0 0 1 .5-.5h10.5a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
@@ -262,7 +632,7 @@ function LcdContentSend() {
 					        	</a>
 					        </td>
 					        <td> <!-- DCMotor Stop -->
-					        	<a>
+					        	<a onclick="stop()">
 					        		<svg class="bi bi-x-circle text-white" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 									  <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
 									  <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
@@ -271,7 +641,7 @@ function LcdContentSend() {
 					        	</a>
 					        </td>
 					        <td> <!-- Front Tire Right -->
-					        	<a>
+					        	<a onclick="keyPressOrder(39)">
 					        		<svg class="bi bi-arrow-right text-white" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 									  <path fill-rule="evenodd" d="M10.146 4.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 8l-2.647-2.646a.5.5 0 0 1 0-.708z"/>
 									  <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5H13a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8z"/>
@@ -279,14 +649,14 @@ function LcdContentSend() {
 					        	</a>
 					        </td>
 					        <td> <!-- Ultrasonic Left -->
-					        	<a>
+					        	<a onclick="hcsrMotor_down('left')">
 					        		<svg class="bi bi-chevron-left text-white" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 									  <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
 									</svg>
 					        	</a>
 					        </td>
 					        <td> <!-- Ultrasonic 정렬 -->
-					        	<a>
+					        	<a onclick="hcsrMotor_down('middle')">
 					        		<svg class="bi bi-plus-circle text-white" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 									  <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
 									  <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
@@ -295,7 +665,7 @@ function LcdContentSend() {
 					        	</a>
 					        </td>
 					        <td> <!-- Ultrasonic Right -->
-					        	<a>
+					        	<a onclick="hcsrMotor_down('right')">
 					        		<svg class="bi bi-chevron-right text-white" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 									  <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
 									</svg>
@@ -305,7 +675,7 @@ function LcdContentSend() {
 					      <tr>
 					        <td></td>
 					        <td> <!-- 카메라 down -->
-					        	<a>
+					        	<a onclick="cameraMoveDown()">
 						        	<svg class="bi bi-chevron-down text-white" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 									  <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
 									</svg>
@@ -314,7 +684,7 @@ function LcdContentSend() {
 					        <td></td>
 					        <td></td>
 					        <td> <!-- DCMotor Backward -->
-					        	<a>
+					        	<a onclick="backward()">
 					        		<svg class="bi bi-arrow-down text-white" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 									  <path fill-rule="evenodd" d="M4.646 9.646a.5.5 0 0 1 .708 0L8 12.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
 									  <path fill-rule="evenodd" d="M8 2.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V3a.5.5 0 0 1 .5-.5z"/>

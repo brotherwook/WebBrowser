@@ -1,5 +1,8 @@
 package com.mycompany.project.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -77,11 +80,11 @@ public class HomeController {
 		return "home/sungjin";
 	}
 	
-	@RequestMapping("/page1.do")
-	public String page1() {
-		LOGGER.info("실행");
-		return "home/sungjin/page1";
-	}
+//	@RequestMapping("/page1.do")
+//	public String page1() {
+//		LOGGER.info("실행");
+//		return "home/sungjin/page1";
+//	}
 	
 	@RequestMapping("/page2.do")
 	public String page2() {
@@ -113,7 +116,20 @@ public class HomeController {
 		LOGGER.info("실행");
 		return "home/sensingpage";
 	}
-
+	
+	// --------------김예나----------------------
+	@RequestMapping("/page1.do")
+	public String page1(HttpServletRequest request, HttpServletResponse response) {
+		LOGGER.info("실행");
+		String userData = request.getHeader("user-agent");
+		LOGGER.info(userData);
+		
+		if(userData.contains("iPhone") || userData.contains("Android")) {
+			return "home/sungjin/page2";
+		}
+		return "home/sungjin/page1";
+	}
+	
 	// --------------주상민----------------------
 	@RequestMapping("/jujeonMain.do")
 	public String jujeonMain() {
