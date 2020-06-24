@@ -34,6 +34,7 @@
 <!-- MQTT end -->
 
 <!-- HighCharts -->
+
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/highcharts-more.js"></script>
 <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
@@ -59,6 +60,14 @@
 
 <script src="${pageContext.request.contextPath}/resource/js/ultrasonic_direction.js"></script>
 
+<script>
+function LcdContentSend() {
+			var str1 = $("#input1").val()
+			var str2 = $("#input2").val()
+			
+			//LCD로 전달
+}
+</script>
 </head>
 <body class="bg-dark">
 
@@ -163,17 +172,15 @@
 						  <span class="slider round"></span>
 						</label>
 						<p>LCD</p>
-						<form>
+						 
 						  <div class="form-group">
-						    <label for="input1">Line 1</label>
 						    <input type="text" class="form-control" id="input1">
 						  </div>
 						  <div class="form-group">
-						    <label for="input2">Line2</label>
 						    <input type="text" class="form-control" id="input2">
 						  </div>
-						  <button type="submit" class="btn btn-primary">Submit</button>
-						</form>
+						  <button onclick="LcdContentSend()" class="btn btn-primary">Submit</button>
+						
 					</div>
 					<div class="col-3">
 					</div>

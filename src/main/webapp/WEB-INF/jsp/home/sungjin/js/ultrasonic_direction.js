@@ -82,8 +82,7 @@ $(function(){
 		        dataLabels: {
 		            format:
 		                '<div style="text-align:center">' +
-		                '<span style="font-size:100px;color:#82e0e2">{y}</span><' +
-		                '<span style="font-size:12px;opacity:0.4">km/h</span>' +
+		                '<span style="font-size:100px;color:#82e0e2">{y}˚</span>' +
 		                '</div>'
 		        },
 		        tooltip: {
@@ -109,9 +108,9 @@ $(function(){
 		        dataLabels: {
 		            format:
 		                '<div style="text-align:center">' +
-		                '<span style="font-size:100px;color:#82e0e2">{y:.1f}</span>' +
+		                '<span style="font-size:100px;color:#82e0e2">{y}</span>' +
 		                '<span style="font-size:12px;opacity:0.4">' +
-		                '* 1000 / min' +
+		                'km' +
 		                '</span>' +
 		                '</div>'
 		        },
@@ -144,7 +143,7 @@ $(function(){
 		    // RPM
 		    if (chartRpm) {
 		        point = chartRpm.series[0].points[0];
-		        inc = Math.random() - 0.5;
+		        inc = Math.round((Math.random() - 0.5) * 100);
 		        newVal = point.y + inc;
 
 		        if (newVal < 0 || newVal > 5) {
