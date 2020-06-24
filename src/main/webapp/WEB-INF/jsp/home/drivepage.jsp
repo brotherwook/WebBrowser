@@ -75,87 +75,95 @@
 			}
 			
 			// -------------- Keyboard Pressed --------------
+			var keyset = [];
 			$(function(){
 				console.log('event ready')
 		  		document.addEventListener('keydown', function(e) {
 				    const keyCode = e.keyCode;
 				    console.log(keyCode);
-				    
-				    switch(keyCode){
-				    case 32:
-				    	buzzer("on");
-				    	break;
-				    case 38:
-				    	forward();
-				    	break;
-				    case 40:
-				    	backward();
-				    	break;
-				    case 87:
-				    	cameraMoveUp();
-				    	break;
-				    case 83:
-				    	cameraMoveDown();
-				    	break;
-				    case 65:
-				    	cameraMoveLeft();
-				    	break;
-				    case 68:
-				    	cameraMoveRight();
-				    	break;
-				    case 82:
-				    	cameraMoveCenter();
-				    	break;
-				    case 49:
-				    	ledred();
-				    	break;
-				    case 50:
-				    	ledgreen();
-				    	break;
-				    case 51:
-				    	ledblue();
-				    	break;
-				    case 52:
-				    	ledoff();
-				    	break;
-				    case 37:
-				    	keyPressOrder(37)
-				    	break;
-				    case 39:
-				    	keyPressOrder(39)
-				    	break;
-				    case 97:
-				    	keyPressOrder(97)
-				    	break;
-				    case 13:
-				    	keyPressOrder(13)
-				    	break;
-				    default:
-				    	console.log("nothing");
-				    }
+				  
+				    keyset[keyCode] = true;
 				})
+				
 			})
+			
+			
+			 setInterval(function () {
+				    if(keyset[32]){
+				    	buzzer("on");
+				    	console.log("32 눌림")
+				    }
+				    if(keyset[38]){
+				    	forward();
+				    	console.log("38 눌림")
+				    }
+				    if(keyset[40]){
+				    	backward();
+				    }
+				    if(keyset[87]){
+				    	cameraMoveUp();
+				    }
+				    if(keyset[83]){
+				    	cameraMoveDown()
+				    }
+				    if(keyset[65]){
+				    	cameraMoveLeft();
+				    }
+				    if(keyset[68]){
+				    	cameraMoveRight();
+				    }
+				    if(keyset[82]){
+				    	cameraMoveCenter();
+				    }
+				    if(keyset[49]){
+				    	ledred();
+				    }
+				    if(keyset[50]){
+				    	ledgreen();
+				    }
+				    if(keyset[51]){
+				    	ledblue();
+				    }
+				    if(keyset[52]){
+				    	ledoff();
+				    }
+				    if(keyset[37]){
+				    	keyPressOrder(37)
+				    }
+				    if(keyset[39]){
+				    	keyPressOrder(39)
+				    }
+				    if(keyset[97]){
+				    	keyPressOrder(97)
+				    }
+				    if(keyset[13]){
+				    	keyPressOrder(13)
+				    }
+	                }, 150);
 			
 			function keyPressOrder(keyCode){
 		
 				message = new Paho.MQTT.Message(String(keyCode));
 				message.destinationName = "/command/order"
-				client.send(message);
+				publisher.send(message);
 			}
 			// -------------- Keyboard Up --------------
 			$(function() {
 				document.addEventListener('keyup', function(e) {
 					const keyCode = e.keyCode;
 					console.log('pushed key ' + e.key);
-
+					
+					keyset[keyCode] = false;
 					if (keyCode == 32) { // Space키 - Buzzer 
 						buzzer("off");
+						
 					}
 
 					if (keyCode == 38 || keyCode == 40) { // forward, backward 키
 						stop();
 						speed = 1000;
 					}
+					
 				})
 			})
 			
@@ -260,6 +268,35 @@
 				} else {
 					$("#p1").html("ON")
 				}
+			}
+			
+			// ------------------ led -----------------
+			function ledred() {
+				message = new Paho.MQTT.Message('LedRed');
+				message.destinationName = "/command";
+				console.log("red")
+				publisher.send(message);
+			}
+			
+			function ledgreen() {
+				console.log("green")
+				message = new Paho.MQTT.Message('LedGreen');
+				message.destinationName = "/command";
+				publisher.send(message);
+			}
+			
+			function ledblue() {
+				console.log("blue")
+				message = new Paho.MQTT.Message('LedBlue');
+				message.destinationName = "/command";
+				publisher.send(message);
+			}
+			
+			function ledoff() {
+				console.log("Ledoff")
+				message = new Paho.MQTT.Message('LedOff');
+				message.destinationName = "/command";
+				publisher.send(message);
 			}
 		</script>
 	</head>
