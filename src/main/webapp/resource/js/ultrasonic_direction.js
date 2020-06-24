@@ -78,7 +78,7 @@ $(function(){
 
 		    series: [{
 		        name: 'Speed',
-		        data: [80],
+		        data: [90],
 		        dataLabels: {
 		            format:
 		                '<div style="text-align:center">' +
@@ -104,11 +104,11 @@ $(function(){
 
 		    series: [{
 		        name: 'RPM',
-		        data: [1],
+		        data: [0],
 		        dataLabels: {
 		            format:
 		                '<div style="text-align:center">' +
-		                '<span style="font-size:100px;color:#82e0e2">{y}</span>' +
+		                '<span id="distan" style="font-size:100px;color:#82e0e2">{y}</span>' +
 		                '<span style="font-size:12px;opacity:0.4">' +
 		                'km' +
 		                '</span>' +
@@ -125,17 +125,13 @@ $(function(){
 		setInterval(function () {
 		    // Speed
 		    var point,
-		        newVal,
-		        inc;
+		        newVal;
+		     
 
 		    if (chartSpeed) {
 		        point = chartSpeed.series[0].points[0];
-		        inc = Math.round((Math.random() - 0.5) * 100);
-		        newVal = point.y + inc;
-
-		        if (newVal < 0 || newVal > 200) {
-		            newVal = point.y - inc;
-		        }
+	
+		        newVal =parseInt(sensor.servo3);
 
 		        point.update(newVal);
 		    }
@@ -143,14 +139,18 @@ $(function(){
 		    // RPM
 		    if (chartRpm) {
 		        point = chartRpm.series[0].points[0];
-		        inc = Math.round((Math.random() - 0.5) * 100);
-		        newVal = point.y + inc;
 
-		        if (newVal < 0 || newVal > 5) {
-		            newVal = point.y - inc;
-		        }
-
+		        newVal = parseInt(sensor.distance);
 		        point.update(newVal);
+		        if(newVal <=15){
+			        $('#distan').attr('style','font-size:120px;color:#FF0000');
+			        console.log("1111");
+		        }
+		        else{
+		        	$('#distan').attr('style','font-size:100px;color:#82e0e2');
+		        	console.log("2222");
+		        }
+		       
 		    }
-		}, 2000);
+		}, 500);
 });

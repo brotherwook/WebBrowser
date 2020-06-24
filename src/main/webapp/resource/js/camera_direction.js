@@ -104,7 +104,7 @@ $(function(){
 
 		    series: [{
 		        name: 'RPM',
-		        data: [1],
+		        data: [0],
 		        dataLabels: {
 		            format:
 		                '<div style="text-align:center">' +
@@ -122,32 +122,20 @@ $(function(){
 		setInterval(function () {
 		    // Speed
 		    var point,
-		        newVal,
-		        inc;
-
+		        newVal;
+		    
 		    if (chartSpeed) {
-		        point = chartSpeed.series[0].points[0];
-		        inc = Math.round((Math.random() - 0.5) * 100);
-		        newVal = point.y + inc;
-
-		        if (newVal < 0 || newVal > 200) {
-		            newVal = point.y - inc;
-		        }
-
+		        point = chartSpeed.series[0].points[0];		        
+		        newVal = parseInt(sensor.servo1);
 		        point.update(newVal);
+		        
 		    }
 
 		    // RPM
 		    if (chartRpm) {
-		        point = chartRpm.series[0].points[0];
-		        inc = Math.round((Math.random() - 0.5) * 100);
-		        newVal = point.y + inc;
-
-		        if (newVal < 0 || newVal > 5) {
-		            newVal = point.y - inc;
-		        }
-
+		    	point = chartRpm.series[0].points[0];
+		        newVal = parseInt(sensor.servo2);		    
 		        point.update(newVal);
 		    }
-		}, 2000);
+		}, 500);
 });
