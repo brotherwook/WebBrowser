@@ -141,7 +141,7 @@ $(function(){
 
 		    series: [{
 		        name: 'Speed',
-		        data: [80],
+		        data: [0],
 		        dataLabels: {
 		            format:
 		                '<div style="text-align:center">' +
@@ -168,11 +168,11 @@ $(function(){
 
 		    series: [{
 		        name: 'RPM',
-		        data: [1],
+		        data: [90],
 		        dataLabels: {
 		            format:
 		                '<div style="text-align:center">' +
-		                '<span style="font-size:100px;color:#82e0e2">{y}˚</span>' +
+		                '<span id = "srtColor" style="font-size:100px;color:#82e0e2">{y}˚</span>' +
 		                '</div>'
 		        },
 		        tooltip: {
@@ -186,32 +186,29 @@ $(function(){
 		setInterval(function () {
 		    // Speed
 		    var point,
-		        newVal,
-		        inc;
-
+		        newVal
+		       
 		    if (chartSpeed) {
 		        point = chartSpeed.series[0].points[0];
-		        inc = Math.round((Math.random() - 0.5) * 100);
-		        newVal = point.y + inc;
-
-		        if (newVal < 0 || newVal > 200) {
-		            newVal = point.y - inc;
-		        }
-
+		        newVal =  Math.round(parseInt(sensor.dcmotor_speed)/20.475);
+		        	
+		        console.log(newVal);
 		        point.update(newVal);
-		    }
+		       }
 
 		    // RPM
 		    if (chartRpm) {
 		        point = chartRpm.series[0].points[0];
-		        inc = Math.round((Math.random() - 0.5) * 100);
-		        newVal = point.y + inc;
-
-		        if (newVal < 0 || newVal > 5) {
-		            newVal = point.y - inc;
-		        }
-
+		    
+		        newVal =parseInt(sensor.servo4);
 		        point.update(newVal);
+		        if(newVal == 180 || newVal == 0){
+			        $('#srtColor').attr('style','font-size:100px;color:#FF0000');
+		        }
+		        else{
+		        	$('#srtColor').attr('style','font-size:100px;color:#82e0e2');
+		        	
+		        }
 		    }
-		}, 2000);
+		}, 500);
 });
