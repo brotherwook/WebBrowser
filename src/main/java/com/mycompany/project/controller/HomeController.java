@@ -117,7 +117,7 @@ public class HomeController {
 		return "home/sensingpage";
 	}
 	
-	// --------------김예나----------------------
+	// --------------김예나^^----------------------
 	@RequestMapping("/page1.do")
 	public String page1(HttpServletRequest request, HttpServletResponse response) {
 		LOGGER.info("실행");
@@ -125,7 +125,7 @@ public class HomeController {
 		LOGGER.info(userData);
 		
 		if(userData.contains("iPhone") || userData.contains("Android")) {
-			return "home/sungjin/page2";
+			return "home/sungjin/cameraAngleMotor";
 		}
 		return "home/sungjin/page1";
 	}
