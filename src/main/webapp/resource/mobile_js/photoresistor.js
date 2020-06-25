@@ -7,7 +7,7 @@ $(function(){
 			width: 280,
 	        type: 'spline',
 	        animation: Highcharts.svg, // don't animate in old IE
-	        marginRight: 10,
+	        margin: [10, 0, 30, 50],
 	        events: {
 	            load: function () {
 	                // set up the updating of the chart each second

@@ -7,7 +7,8 @@ $(function(){
 			plotBackgroundColor: 'transparent',
 			plotBackgroundImage: null,
 			width: 120,
-			height: 200
+			height: 200,
+			margin: [0, 0, 0, 0]
 	    },
 
 	    title: {

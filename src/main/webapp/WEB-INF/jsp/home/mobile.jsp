@@ -299,7 +299,30 @@
 						message.destinationName = "/command/lcd2";
 						publisher.send(message);
 			}
+			//---------------------ultrasonic motor---------------------
+			var hcsr_angle = 90;
 
+			function hcsrMotor_down(direction) {
+				if(direction == "left") {
+					if (hcsr_angle >= 180)
+						hcsr_angle = 180;
+					else
+						hcsr_angle += 30;
+				}
+				else if(direction == "right") {
+					if (hcsr_angle <= 0)
+						hcsr_angle = 0;
+					else
+						hcsr_angle -= 30;
+				}
+				else
+					hcsr_angle = 90;
+				
+				var message = new Paho.MQTT.Message(hcsr_angle.toString());
+				message.destinationName = "/command/servo3";
+				publisher.send(message);
+
+			}
 		</script>
 	</head>
 	<body style="background-color: #202020">
@@ -411,9 +434,9 @@
 											</svg>
 										</p>
 									<td>
-									<td align="center" style="height: 200px;">
-										<div id="speedometer" style="width:">
-											<figure class="highcharts-figure" style="display: inline-block;">
+									<td align="center" style="height: 250px;">
+										<div id="speedometer">
+											<figure class="highcharts-figure">
 										    	<div id="Speedometer">
 												</div>
 											</figure>
@@ -445,12 +468,10 @@
 								<tr align="center" >
 									<td/>
 									<td> <!-- DCMotor forward -->
-										<a>
-											<svg class="bi bi-arrow-up text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="forward()">
-												<path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
-												<path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8 3.707 5.354 6.354a.5.5 0 1 1-.708-.708l3-3z"/>
-											</svg>
-										</a>
+										<svg class="bi bi-arrow-up text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="forward()">
+											<path fill="#82e0e2" fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+											<path fill="#82e0e2" fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8 3.707 5.354 6.354a.5.5 0 1 1-.708-.708l3-3z"/>
+										</svg>
 									</td>
 									<td/>
 									<td/>
@@ -458,96 +479,74 @@
 									<td/>
 									<td/>
 									<td> <!-- 카메라 up -->
-										<a>
-											<svg class="bi bi-chevron-up text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="cameraMoveUp()">
-												<path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
-											</svg>
-										</a>
+										<svg class="bi bi-chevron-up text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="cameraMoveUp()">
+											<path fill="#82e0e2" fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+										</svg>
 									</td>
 									<td/>
 								</tr>
 								<tr align="center">
 									<td> <!-- Front Tire left -->
-										<a>
-											<svg class="bi bi-arrow-left text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="keyPressOrder(37)">
-												<path fill-rule="evenodd" d="M5.854 4.646a.5.5 0 0 1 0 .708L3.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0z"/>
-												<path fill-rule="evenodd" d="M2.5 8a.5.5 0 0 1 .5-.5h10.5a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-											</svg>
-										</a>
+										<svg class="bi bi-arrow-left text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="keyPressOrder(37)">
+											<path fill="#82e0e2" fill-rule="evenodd" d="M5.854 4.646a.5.5 0 0 1 0 .708L3.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0z"/>
+											<path fill="#82e0e2" fill-rule="evenodd" d="M2.5 8a.5.5 0 0 1 .5-.5h10.5a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+										</svg>
 									</td>
 									<td> <!-- DCMotor Stop -->
-										<a>
-											<svg class="bi bi-x-circle text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg"  onclick="stop()">
-												<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-												<path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
-												<path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
-											</svg>
-										</a>
+										<svg class="bi bi-x-circle text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg"  onclick="stop()">
+											<path fill="#82e0e2" fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+											<path fill="#82e0e2" fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
+											<path fill="#82e0e2" fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
+										</svg>
 									</td>
 									<td> <!-- Front Tire Right -->
-										<a>
-											<svg class="bi bi-arrow-right text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="keyPressOrder(39)">
-												<path fill-rule="evenodd" d="M10.146 4.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 8l-2.647-2.646a.5.5 0 0 1 0-.708z"/>
-												<path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5H13a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8z"/>
-											</svg>
-										</a>
+										<svg class="bi bi-arrow-right text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="keyPressOrder(39)">
+											<path fill="#82e0e2" fill-rule="evenodd" d="M10.146 4.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 8l-2.647-2.646a.5.5 0 0 1 0-.708z"/>
+											<path fill="#82e0e2" fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5H13a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8z"/>
+										</svg>
 									</td>
 									<td> <!-- Ultrasonic Left -->
-										<a>
-											<svg class="bi bi-chevron-left text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-												<path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-											</svg>
-										</a>
+										<svg class="bi bi-chevron-left text-white" onclick="hcsrMotor_down('left')" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+											<path fill="#82e0e2" fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+										</svg>
 									</td>
 									<td> <!-- Ultrasonic 정렬 -->
-										<a>
-											<svg class="bi bi-plus-circle text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-												<path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
-												<path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
-												<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-											</svg>
-										</a>
+										<svg class="bi bi-plus-circle text-white" onclick="hcsrMotor_down()" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+											<path fill="#82e0e2" fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
+											<path fill="#82e0e2" fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
+											<path fill="#82e0e2" fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+										</svg>
 									</td>
 									<td> <!-- Ultrasonic Right -->
-										<a>
-											<svg class="bi bi-chevron-right text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-												<path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-											</svg>
-										</a>
+										<svg class="bi bi-chevron-right text-white" onclick="hcsrMotor_down('right')" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+											<path fill="#82e0e2" fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+										</svg>
 									</td>
 									<td> <!-- 카메라 left -->
-										<a>
-											<svg class="bi bi-chevron-left text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="cameraMoveLeft()">
-												<path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-											</svg>
-										</a>
+										<svg class="bi bi-chevron-left text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="cameraMoveLeft()">
+											<path fill="#82e0e2" fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+										</svg>
 									</td>
 									<td> <!-- 카메라 정렬 -->
-										<a>
-											<svg class="bi bi-plus-circle text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="cameraMoveCenter()">
-												<path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
-												<path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
-												<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-											</svg>
-										</a>
+										<svg class="bi bi-plus-circle text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="cameraMoveCenter()">
+											<path fill="#82e0e2" fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
+											<path fill="#82e0e2" fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
+											<path fill="#82e0e2" fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+										</svg>
 									</td>
 									<td> <!-- 카메라 right -->
-										<a>
-											<svg class="bi bi-chevron-right text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="cameraMoveRight()">
-												<path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-											</svg>
-										</a>
+										<svg class="bi bi-chevron-right text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="cameraMoveRight()">
+											<path fill="#82e0e2" fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+										</svg>
 									</td>
 								</tr>
 								<tr align="center">
 									<td/>
 									<td> <!-- DCMotor Backward -->
-										<a>
-											<svg class="bi bi-arrow-down text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg"  onclick="backward()">
-												<path fill-rule="evenodd" d="M4.646 9.646a.5.5 0 0 1 .708 0L8 12.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
-												<path fill-rule="evenodd" d="M8 2.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V3a.5.5 0 0 1 .5-.5z"/>
-											</svg>
-										</a>
+										<svg class="bi bi-arrow-down text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg"  onclick="backward()">
+											<path fill="#82e0e2" fill-rule="evenodd" d="M4.646 9.646a.5.5 0 0 1 .708 0L8 12.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
+											<path fill="#82e0e2" fill-rule="evenodd" d="M8 2.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V3a.5.5 0 0 1 .5-.5z"/>
+										</svg>
 									</td>
 									<td/>
 									<td/>
@@ -555,11 +554,9 @@
 									<td/>
 									<td/>
 									<td> <!-- 카메라 down -->
-										<a>
-											<svg class="bi bi-chevron-down text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="cameraMoveDown()">
-												<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
-											</svg>
-										</a>
+										<svg class="bi bi-chevron-down text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="cameraMoveDown()">
+											<path fill="#82e0e2" fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+										</svg>
 									</td>
 									<td/>
 								</tr>
