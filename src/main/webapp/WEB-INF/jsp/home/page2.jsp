@@ -146,19 +146,11 @@
 				<div class="col">
 					<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 					  <ul class="navbar-nav">
-					    <li class="nav-item active">
+					    <li class="nav-item">
 					      <a class="nav-link" href="page1.do">
 					      	<svg class="bi bi-command" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 							  <path fill-rule="evenodd" d="M2 3.5A1.5 1.5 0 0 0 3.5 5H5V3.5a1.5 1.5 0 1 0-3 0zM6 6V3.5A2.5 2.5 0 1 0 3.5 6H6zm8-2.5A1.5 1.5 0 0 1 12.5 5H11V3.5a1.5 1.5 0 0 1 3 0zM10 6V3.5A2.5 2.5 0 1 1 12.5 6H10zm-8 6.5A1.5 1.5 0 0 1 3.5 11H5v1.5a1.5 1.5 0 0 1-3 0zM6 10v2.5A2.5 2.5 0 1 1 3.5 10H6zm8 2.5a1.5 1.5 0 0 0-1.5-1.5H11v1.5a1.5 1.5 0 0 0 3 0zM10 10v2.5a2.5 2.5 0 1 0 2.5-2.5H10z"/>
 							  <path fill-rule="evenodd" d="M10 6H6v4h4V6zM5 5v6h6V5H5z"/>
-							</svg>
-					      </a>
-					    </li>
-					    <li class="nav-item active">
-					      <a class="nav-link" href="page2.do">
-					      	<svg class="bi bi-gear" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-							  <path fill-rule="evenodd" d="M8.837 1.626c-.246-.835-1.428-.835-1.674 0l-.094.319A1.873 1.873 0 0 1 4.377 3.06l-.292-.16c-.764-.415-1.6.42-1.184 1.185l.159.292a1.873 1.873 0 0 1-1.115 2.692l-.319.094c-.835.246-.835 1.428 0 1.674l.319.094a1.873 1.873 0 0 1 1.115 2.693l-.16.291c-.415.764.42 1.6 1.185 1.184l.292-.159a1.873 1.873 0 0 1 2.692 1.116l.094.318c.246.835 1.428.835 1.674 0l.094-.319a1.873 1.873 0 0 1 2.693-1.115l.291.16c.764.415 1.6-.42 1.184-1.185l-.159-.291a1.873 1.873 0 0 1 1.116-2.693l.318-.094c.835-.246.835-1.428 0-1.674l-.319-.094a1.873 1.873 0 0 1-1.115-2.692l.16-.292c.415-.764-.42-1.6-1.185-1.184l-.291.159A1.873 1.873 0 0 1 8.93 1.945l-.094-.319zm-2.633-.283c.527-1.79 3.065-1.79 3.592 0l.094.319a.873.873 0 0 0 1.255.52l.292-.16c1.64-.892 3.434.901 2.54 2.541l-.159.292a.873.873 0 0 0 .52 1.255l.319.094c1.79.527 1.79 3.065 0 3.592l-.319.094a.873.873 0 0 0-.52 1.255l.16.292c.893 1.64-.902 3.434-2.541 2.54l-.292-.159a.873.873 0 0 0-1.255.52l-.094.319c-.527 1.79-3.065 1.79-3.592 0l-.094-.319a.873.873 0 0 0-1.255-.52l-.292.16c-1.64.893-3.433-.902-2.54-2.541l.159-.292a.873.873 0 0 0-.52-1.255l-.319-.094c-1.79-.527-1.79-3.065 0-3.592l.319-.094a.873.873 0 0 0 .52-1.255l-.16-.292c-.892-1.64.902-3.433 2.541-2.54l.292.159a.873.873 0 0 0 1.255-.52l.094-.319z"/>
-							  <path fill-rule="evenodd" d="M8 5.754a2.246 2.246 0 1 0 0 4.492 2.246 2.246 0 0 0 0-4.492zM4.754 8a3.246 3.246 0 1 1 6.492 0 3.246 3.246 0 0 1-6.492 0z"/>
 							</svg>
 					      </a>
 					    </li>
@@ -171,7 +163,7 @@
 							</svg>
 					      </a>
 					    </li>
-					    <li class="nav-item dropdown active">
+					    <li class="nav-item dropdown">
 					      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
 					        <svg class="bi bi-archive" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 							  <path fill-rule="evenodd" d="M2 5v7.5c0 .864.642 1.5 1.357 1.5h9.286c.715 0 1.357-.636 1.357-1.5V5h1v7.5c0 1.345-1.021 2.5-2.357 2.5H3.357C2.021 15 1 13.845 1 12.5V5h1z"/>
@@ -189,38 +181,45 @@
 			</div>
 			
 			<div id="section">
-				<table width="100%" style="text-align: center; border: none;">
+				<table width="75%" style="text-align: center; border: none; margin: auto;">
 					<tr>
-						<td>
-							
-						</td>
-						<td>
+						<td >
 							<img id="tracker" src="${pageContext.request.contextPath}/resource/img/black.jpg" 
-									style="width:100px; height: 210px;">		
+									style="width:100px; height: 210px; margin-top: 50px;">		
 						</td>
-					<tr>
-						<br/>
+						
 						<td>
 							<figure class="highcharts-figure">
 								<div id="photoresistor"></div>
 							</figure>
 						</td>
+						
 						<td>
 							<figure class="highcharts-figure">
 								<div id="thermistor"></div>
 							</figure>
+						</td>
+						
+					</tr>
+	
+					<tr style="height: 20px;"></tr>
+					
+					<tr>
+						<td>
+						
 						</td>
 						<td>
 							<figure class="highcharts-figure">
 								<div id="gas"></div>
 							</figure>
 						</td>
+						
 						<td>
 							<figure class="highcharts-figure">
 								<div id="distance"></div>
 							</figure>
 						</td>				
-					<tr>
+					</tr>
 				</table>
 			</div>
 			
