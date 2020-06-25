@@ -8,7 +8,7 @@ $(function() {
 //called when a message arrives
 function onMessageArrived(message) {
 	if(message.destinationName == "/camerapub") {
-		$("#cameraView").attr("style","background-image: url(data:image/jpg;base64," + message.payloadString+");background-repeat: no-repeat;background-size: 100%;");
+		$("#cameraView").attr("style","background-image: url(data:image/jpg;base64," + message.payloadString+");background-repeat: no-repeat;background-size: 100%;position:relative;height:250px");
 	}
 	
 	if(message.destinationName == "/sensor") {

@@ -197,6 +197,11 @@
 			    $("#speedometer").animate({
 			        width: "toggle"
 			    }, 400, "linear");
+			    if($("#tracker").attr("hidden")=="hidden"){
+			    	$("#tracker").removeAttr("hidden")
+			    }else if($("#tracker").attr("hidden")!="hidden"){
+			    	$("#tracker").attr("hidden","hidden")
+			    }
 			};
 			// -------------- LED --------------
 			function LED() {
@@ -253,7 +258,7 @@
 	<body style="background-color: #202020">
 			<table>
 				<tr>
-					<td style="width: 100px">
+					<td style="width: 10%">
 						<nav class="navbar navbar-expand-sm navbar-dark">
 							<ul class="navbar-nav">
 								<li class="nav-item active">
@@ -293,39 +298,43 @@
 							</ul>
 						</nav>
 					</td>
-					<td style="width: 600px">
-						<div id="cameraView">
+					<td style="width: 50%">
+						<div id="cameraView" align="center" style="position:relative;height:250px">
 							<table>
 								<tr>
 									<td>
 										<div style="display: none; background-color: #202020;height: 250px" id="charts" class="row">
-											<div>
+											<div class="col-sm-6">
 												<figure class="highcharts-figure">
 											    	<div id="distance"></div>
 												</figure>
 											</div>
-											<div>
+											<div class="col-sm-6">
 												<figure class="highcharts-figure">
 											    	<div id="photoresistor"></div>
 												</figure>
 											</div>
-											<div>
+											<div class="col-sm-6">
 												<figure class="highcharts-figure">
 											    	<div id="thermistor"></div>
 												</figure>
 											</div>
-											<div>
+											<div class="col-sm-6">
 												<figure class="highcharts-figure">
 											    	<div id="gas"></div>
 												</figure>
 											</div>
 										</div>
 									</td>
-									<td align="center" style="height: 250px">
-										<div id="speedometer">
-											<svg id="tracker" class="bi bi-square-fill" id="tracker" width = "30" height = "25">
+									<td>
+										<p style="position: absolute;right:10px;bottom:0px">
+											<svg class="bi bi-square-fill" id="tracker" width = "30" height = "25">
 												<rect width="25" height="25" x="5"/>
 											</svg>
+										</p>
+									<td>
+									<td align="center" style="height: 200px;">
+										<div id="speedometer" style="width:">
 											<figure class="highcharts-figure" style="display: inline-block;">
 										    	<div id="Speedometer">
 												</div>
@@ -336,7 +345,7 @@
 							</table>
 						</div>
 					</td>
-					<td style="width: 200px" align="center">
+					<td style="width: 20%" align="center">
 						<figure class="highcharts-figure">
 						    <div id="container"></div>
 						    <p class="highcharts-description">
@@ -349,13 +358,13 @@
 						<table style="height: 200px;width: 900px">
 							<thead>
 								<tr align="center">
-									<td colspan="3" style="color: #82e0e2;"><div>Sensing Rover</div></td>
+									<td colspan="3" style="color: #82e0e2;"><span>Sensing Rover</span></td>
 									<td colspan="3" style="color: #82e0e2;">Ultrasonic Sensor</td>
 									<td colspan="3" style="color: #82e0e2;">Camera</td>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
+								<tr align="center" >
 									<td/>
 									<td> <!-- DCMotor forward -->
 										<a>
@@ -379,7 +388,7 @@
 									</td>
 									<td/>
 								</tr>
-								<tr>
+								<tr align="center">
 									<td> <!-- Front Tire left -->
 										<a>
 											<svg class="bi bi-arrow-left text-white" width="1em" height="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="keyPressOrder(37)">
@@ -452,7 +461,7 @@
 										</a>
 									</td>
 								</tr>
-								<tr>
+								<tr align="center">
 									<td/>
 									<td> <!-- DCMotor Backward -->
 										<a>

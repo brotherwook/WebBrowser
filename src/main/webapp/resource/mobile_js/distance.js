@@ -4,7 +4,7 @@ $(function(){
 	    	backgroundColor: "rgba(0,0,0,0)",
 			plotBackgroundColor: 'transparent',
 			height: 100,
-			width:300,
+			width:280,
 	        type: 'spline',
 	        animation: Highcharts.svg, // don't animate in old IE
 	        marginRight: 10,
