@@ -67,7 +67,7 @@
 			//---------------- publisher ----------------
 			$(function() {
 				// Publisher Connection
-				publisher = new Paho.MQTT.Client(location.hostname, 61614,
+				publisher = new Paho.MQTT.Client("192.168.3.250", 61614,
 						new Date().getTime().toString());				publisher.connect({
 					onSuccess : onPublisherConnect
 				});
@@ -191,17 +191,26 @@
 			}
 			// -------------- Chart slide --------------
 			function chart() {
-			    $("#charts").animate({
-			        width: "toggle"
-			    }, 400, "linear");
-			    $("#speedometer").animate({
-			        width: "toggle"
-			    }, 400, "linear");
-			    if($("#tracker").attr("hidden")=="hidden"){
-			    	$("#tracker").removeAttr("hidden")
-			    }else if($("#tracker").attr("hidden")!="hidden"){
-			    	$("#tracker").attr("hidden","hidden")
-			    }
+				if(!$("#lcd").attr("style").includes("none")){
+					$("#lcd").animate({
+				        width: "toggle"
+				    }, 400, "linear");
+				    $("#charts").animate({
+				        width: "toggle"
+				    }, 400, "linear");
+				}else{
+				    $("#charts").animate({
+				        width: "toggle"
+				    }, 400, "linear");
+				    $("#speedometer").animate({
+				        width: "toggle"
+				    }, 400, "linear");
+				    if($("#tracker").attr("hidden")=="hidden"){
+				    	$("#tracker").removeAttr("hidden")
+				    }else if($("#tracker").attr("hidden")!="hidden"){
+				    	$("#tracker").attr("hidden","hidden")
+				    }
+				}
 			};
 			// -------------- LED --------------
 			function LED() {
@@ -252,7 +261,45 @@
 				message.destinationName = "/command";
 				publisher.send(message);
 			}
-			
+			//------------LCD----------------------------
+			function lcdappear(){
+				if (!$("#charts").attr("style").includes("none")){
+					$("#charts").animate({
+				        width: "toggle"
+				    }, 400, "linear");
+					$("#lcd").animate({
+				        width: "toggle"
+				    }, 400, "linear");
+				}else{
+					$("#lcd").animate({
+				        width: "toggle"
+				    }, 400, "linear");
+				    $("#speedometer").animate({
+				        width: "toggle"
+				    }, 400, "linear");
+				    if($("#tracker").attr("hidden")=="hidden"){
+				    	$("#tracker").removeAttr("hidden")
+				    }else if($("#tracker").attr("hidden")!="hidden"){
+				    	$("#tracker").attr("hidden","hidden")
+				    }
+				}
+			}
+			function LcdContentSend() {
+						var str1 = $("#input1").val()
+						var str2 = $("#input2").val()
+						
+						//LCD로 전달
+						console.log("LCD1 전달")
+						message = new Paho.MQTT.Message(str1);
+						message.destinationName = "/command/lcd1";
+						publisher.send(message);
+						
+						console.log("LCD2 전달")
+						message = new Paho.MQTT.Message(str2);
+						message.destinationName = "/command/lcd2";
+						publisher.send(message);
+			}
+
 		</script>
 	</head>
 	<body style="background-color: #202020">
@@ -294,6 +341,11 @@
 											<path fill-rule="evenodd" d="M9.146 5.146a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0z"/>
 										</svg>
 									</a>
+									<a class="nav-link" href="javascript:lcdappear()" id="text">
+										<svg class="bi bi-type" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+											<path d="M2.244 13.081l.943-2.803H6.66l.944 2.803H8.86L5.54 3.75H4.322L1 13.081h1.244zm2.7-7.923L6.34 9.314H3.51l1.4-4.156h.034zm9.146 7.027h.035v.896h1.128V8.125c0-1.51-1.114-2.345-2.646-2.345-1.736 0-2.59.916-2.666 2.174h1.108c.068-.718.595-1.19 1.517-1.19.971 0 1.518.52 1.518 1.464v.731H12.19c-1.647.007-2.522.8-2.522 2.058 0 1.319.957 2.18 2.345 2.18 1.06 0 1.716-.43 2.078-1.011zm-1.763.035c-.752 0-1.456-.397-1.456-1.244 0-.65.424-1.115 1.408-1.115h1.805v.834c0 .896-.752 1.525-1.757 1.525z"/>
+										</svg>
+									</a>
 								</li>
 							</ul>
 						</nav>
@@ -323,6 +375,32 @@
 												<figure class="highcharts-figure">
 											    	<div id="gas"></div>
 												</figure>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div style="display: none; background-color: #202020;height: 250px;width: 100%" id="lcd">
+											<div align="center">
+												<table style="margin: 20px">
+													<tr align="center">
+														<td style="color: #82e0e2;font-size: 15px">LCD</td>
+													</tr>
+													<tr>
+														<td>
+															<input id="input1" type="text" style="font-size: 25px"/>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<input id="input2" type="text" style="font-size: 25px"/>
+														</td>
+													</tr>
+													<tr align="right">
+														<td>
+															<input onclick="LcdContentSend()" value="send" type="button" class="btn btn-primary btn-sm" style="width:100px">
+														</td>
+													</tr>
+												</table>
 											</div>
 										</div>
 									</td>
@@ -358,7 +436,7 @@
 						<table style="height: 200px;width: 900px">
 							<thead>
 								<tr align="center">
-									<td colspan="3" style="color: #82e0e2;"><span>Sensing Rover</span></td>
+									<td colspan="3" style="color: #82e0e2;">Sensing Rover</td>
 									<td colspan="3" style="color: #82e0e2;">Ultrasonic Sensor</td>
 									<td colspan="3" style="color: #82e0e2;">Camera</td>
 								</tr>
