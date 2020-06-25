@@ -77,67 +77,7 @@
 				console.log("mqtt broker publisher connected");
 			}
 			
-			// -------------- Keyboard Pressed --------------
-			$(function(){
-				console.log('event ready')
-		  		document.addEventListener('keydown', function(e) {
-				    const keyCode = e.keyCode;
-				    console.log(keyCode);
-				    
-				    switch(keyCode){
-				    case 32:
-				    	buzzer("on");
-				    	break;
-				    case 38:
-				    	forward();
-				    	break;
-				    case 40:
-				    	backward();
-				    	break;
-				    case 87:
-				    	cameraMoveUp();
-				    	break;
-				    case 83:
-				    	cameraMoveDown();
-				    	break;
-				    case 65:
-				    	cameraMoveLeft();
-				    	break;
-				    case 68:
-				    	cameraMoveRight();
-				    	break;
-				    case 82:
-				    	cameraMoveCenter();
-				    	break;
-				    case 49:
-				    	red();
-				    	break;
-				    case 50:
-				    	green();
-				    	break;
-				    case 51:
-				    	blue();
-				    	break;
-				    case 52:
-				    	off();
-				    	break;
-				    case 37:
-				    	keyPressOrder(37)
-				    	break;
-				    case 39:
-				    	keyPressOrder(39)
-				    	break;
-				    case 97:
-				    	keyPressOrder(97)
-				    	break;
-				    case 13:
-				    	keyPressOrder(13)
-				    	break;
-				    default:
-				    	console.log("nothing");
-				    }
-				})
-			})
+			
 			
 			function keyPressOrder(keyCode){
 		
@@ -145,23 +85,7 @@
 				message.destinationName = "/command/order"
 				publisher.send(message);
 			}
-			// -------------- Keyboard Up --------------
-			$(function() {
-				document.addEventListener('keyup', function(e) {
-					const keyCode = e.keyCode;
-					console.log('pushed key ' + e.key);
 
-					if (keyCode == 32) { // Space키 - Buzzer 
-						buzzer("off");
-					}
-
-					if (keyCode == 38 || keyCode == 40) { // forward, backward 키
-						stop();
-						speed = 1000;
-					}
-				})
-			})
-			
 			// -------------- Buzzer --------------
 			function buzzer(flag) {
 				if (flag=='on'){
