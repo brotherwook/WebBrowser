@@ -5,5 +5,6 @@
 <configuration>
 	<typeAliases>
 		<typeAlias alias="sensor" type="com.mycompany.project.model.Sensor" />
+		<typeAlias alias="image" type="com.mycompany.project.model.ImageCapture" />
 	</typeAliases>
 </configuration>
