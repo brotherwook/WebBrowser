@@ -573,14 +573,26 @@ function hcsrMotor_down(direction) {
 						      <div class="modal-body">
 								  <div class="container-fluid">
 								    <div class="row">
-								      <div class="col-6 border border-dark rounded-lg">
-								      	<img id="cameraView2"/>
+								      <div class="col-6 border border-dark rounded-lg" style="postion:relative;height:100%">
+								      	<div class="row" style="postion:relative;height:100%">
+									      	<div class="col-11">
+								      	<img id="cameraView2" style="width:85%; height:100%"/>
+								      	</div>
+									      	<div class="col-1">
 								      	<%-- <img src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:60%"/> --%>
-								      	<button type="button" class="btn btn-primary" onclick="image_capture()">Capture</button>
+								      	<button type="button" class="btn btn-primary" style="position:absolute;right:0px;bottom:0px" onclick="image_capture()">Capture</button>
+								      	</div>
+									      </div>
 								      </div>
 								      <div class="col-6 border border-dark rounded-lg">
-								      	<img id="capture" alt="not captured"/>
-								      	<button  type="button" class="btn btn-primary" onclick="image_save()">Save</button>
+									      <div class="row" style="postion:relative;height:100%">
+									      	<div class="col-11">
+									      		<img id="capture" style="width:85%; height:100%" alt="not captured"/>
+									      	</div>
+									      	<div class="col-1">
+										      	<button type="button" class="btn btn-primary" style="position:absolute;right:0px;bottom:0px" onclick="image_save()">Save</button>
+									      	</div>
+									      </div>
 								      </div>
 								    </div>
 								    <br>
