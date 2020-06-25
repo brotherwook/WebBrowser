@@ -20,6 +20,9 @@
 	href="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.css">
 <script
 	src="${pageContext.request.contextPath}/resource/jquery-ui/jquery-ui.min.js"></script>
+
+<!-- capture -->
+<script src="${pageContext.request.contextPath}/resource/js/imagecapture.js"></script>
 	
 <!-- Highcharts -->
 <script
@@ -550,7 +553,60 @@ function hcsrMotor_down(direction) {
 						    <input type="text" class="form-control" id="input2">
 						  </div>
 						  <button onclick="LcdContentSend()" class="btn btn-primary">Submit</button>
+						<br>
+						<p></p>
+						<!-- Button trigger modal -->
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop" onclick="modal_open()">
+						  Capture Image
+						</button>
 						
+						<!-- Modal -->
+						<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+						  <div class="modal-dialog modal-xl">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						      </div>
+						      <div class="modal-body">
+								  <div class="container-fluid">
+								    <div class="row">
+								      <div class="col-6 border border-dark rounded-lg">
+								      	<img id="cameraView2"/>
+								      	<%-- <img src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:60%"/> --%>
+								      	<button type="button" class="btn btn-primary" onclick="image_capture()">Capture</button>
+								      </div>
+								      <div class="col-6 border border-dark rounded-lg">
+								      	<img id="capture" alt="not captured"/>
+								      	<button  type="button" class="btn btn-primary" onclick="image_save()">Save</button>
+								      </div>
+								    </div>
+								    <br>
+								    <div class="row">
+								      <div class="col-3">
+								      	<img id="show1" src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:60%"/>
+								      </div>
+								      <div class="col-3">
+								      	<img id="show2" src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:60%"/>
+								      </div>
+								      <div class="col-3">
+								      	<img id="show3" src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:60%"/>
+								      </div>
+								      <div class="col-3">
+								      	<img id="show4" src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:60%"/>
+								      </div>
+								    </div>
+								  </div>
+							  </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						        <button type="button" class="btn btn-primary">Understood</button>
+						      </div>
+						    </div>
+						  </div>
+						</div>
 					</div>
 					<div class="col-3">
 					</div>

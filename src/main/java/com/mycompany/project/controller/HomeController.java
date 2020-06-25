@@ -1,6 +1,7 @@
 package com.mycompany.project.controller;
 
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,17 +12,68 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mycompany.project.model.ImageCapture;
 import com.mycompany.project.model.Sensor;
 import com.mycompany.project.service.HomeService;
+import com.mycompany.project.service.ImageService;
 
 @Controller
 @RequestMapping("/home")
 public class HomeController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
-
+	@Autowired
+	private ImageService imageService;
+	
+	@PostMapping("/save.do")
+	public void save(String idata, HttpServletResponse response) throws Exception {
+		LOGGER.info("실행");
+		ImageCapture imageCapture = new ImageCapture();
+		imageCapture.setIname(new Date().getTime() + "-" + "image");
+		imageCapture.setIdata(idata);
+		imageService.save(imageCapture);
+		
+		List<ImageCapture> list = imageService.list();
+		
+		response.setContentType("application/json; charset=UTF-8");
+		JSONObject jsonObject = new JSONObject();
+		
+		for(int i=0; i<4; i++) {
+			if(list.get(i).getIdata() != null) {
+				jsonObject.put("img" + i, list.get(i).getIdata());
+			}
+		}
+		String json = jsonObject.toString();
+		PrintWriter pw = response.getWriter();
+		pw.write(json);
+		pw.flush();
+		pw.close();
+	}
+	
+	@RequestMapping("/get.do")
+	public void get(HttpServletResponse response) throws Exception {
+		LOGGER.info("실행");
+		
+		List<ImageCapture> list = imageService.list();
+		
+		response.setContentType("application/json; charset=UTF-8");
+		JSONObject jsonObject = new JSONObject();
+		
+		for(int i=0; i<4; i++) {
+			if(list.get(i).getIdata() != null) {
+				jsonObject.put("img" + i, list.get(i).getIdata());
+			}
+		}
+		String json = jsonObject.toString();
+		PrintWriter pw = response.getWriter();
+		pw.write(json);
+		pw.flush();
+		pw.close();
+	}
+	
 	@RequestMapping("/main.do")
 	public String main() {
 		LOGGER.info("실행");
