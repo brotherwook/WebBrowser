@@ -70,17 +70,17 @@ $(function(){
 
 	    series: [{
 	    	color: "#606def",
-	        name: 'Random data',
+	        name: 'Distance',
 	        data: (function () {
 	            // generate an array of random data
 	            var data = [],
-	                time = (new Date()).getTime(),
+	            	time = (new Date()).getTime(),
 	                i;
 
-	            for (i = -19; i <= 0; i += 1) {
+	            for (i = 0; i <= 19; i += 1) {
 	                data.push({
-	                    x: time + i * 1000,
-	                    y: 0
+	                    x: time + (i-19) * 1000,
+	                    y: parseFloat(dist[0][i])
 	                });
 	            }
 	            return data;

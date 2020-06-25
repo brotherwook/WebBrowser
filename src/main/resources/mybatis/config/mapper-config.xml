@@ -4,6 +4,6 @@
 
 <configuration>
 	<typeAliases>
-
+		<typeAlias alias="sensor" type="com.mycompany.project.model.Sensor" />
 	</typeAliases>
 </configuration>

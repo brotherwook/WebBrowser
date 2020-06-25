@@ -36,12 +36,6 @@
 		<!-- HighChart Theme -->
 		<script src="https://code.highcharts.com/js/themes/dark-unica.js"></script>
 		
-		<!-- Sensors -->
-		<script src="${pageContext.request.contextPath}/resource/js/photoresistor.js"></script>
-		<script src="${pageContext.request.contextPath}/resource/js/thermistor.js"></script>
-		<script src="${pageContext.request.contextPath}/resource/js/distance.js"></script>
-		<script src="${pageContext.request.contextPath}/resource/js/gas.js"></script>
-		
 		<script>
 		setInterval(function(){
 			if(sensor.tracker == "White") {
@@ -50,7 +44,32 @@
 				$("#tracker").attr("src", "${pageContext.request.contextPath}/resource/img/black.jpg");
 			}
 		}, 500);
+		
+		var gas=[];
+		var photo=[];
+		var temperature=[];
+		var dist=[];
+		var time=[];
+		
+		$.ajax({
+			type: "POST",
+			url: "highchartplot.do",
+			async: false,
+			success: function(data) {
+				gas.push(data.gas);
+				photo.push(data.photo);
+				temperature.push(data.temperature);
+				dist.push(data.dist);
+			}
+		});
+		
 		</script>
+		
+		<!-- Sensors -->
+		<script src="${pageContext.request.contextPath}/resource/js/photoresistor.js"></script>
+		<script src="${pageContext.request.contextPath}/resource/js/thermistor.js"></script>
+		<script src="${pageContext.request.contextPath}/resource/js/distance.js"></script>
+		<script src="${pageContext.request.contextPath}/resource/js/gas.js"></script>
 		
 		<!--  Navbar, boy, highcharts -->
 		<style type="text/css">

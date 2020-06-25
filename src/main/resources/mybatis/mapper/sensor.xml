@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sensor">
+	<insert id="insertData" parameterType="sensor">
+		INSERT INTo sensor(distance, gas, temperature, photo, time)
+		VALUES(#{distance}, #{gas}, #{temperature}, #{photo}, now())
+	</insert>
+		
+	<select id="selectFirstData" resultType="int">
+		SELECT dataNo FROM sensor LIMIT 1
+	</select>
+	
+	<select id="selectList" resultType="sensor">
+		SELECT * FROM sensor
+	</select>
+	
+	<delete id="DeleteByDataNo">
+		DELETE FROM sensor 
+		WHERE dataNo = #{dataNo}
+	</delete>
+</mapper>
