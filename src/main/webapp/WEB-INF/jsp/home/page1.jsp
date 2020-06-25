@@ -594,21 +594,21 @@ function hcsrMotor_down(direction) {
 								      <div class="col-6 border border-dark rounded-lg" style="postion:relative;height:100%">
 								      	<div class="row" style="postion:relative;height:100%">
 									      	<div class="col-11">
-								      	<img id="cameraView2" style="width:85%; height:100%"/>
-								      	</div>
+									      		<img id="cameraView2" style="width:95%; height:100%"/>
+									      	</div>
 									      	<div class="col-1">
-								      	<%-- <img src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:60%"/> --%>
-								      	<button type="button" class="btn btn-primary" style="position:absolute;right:0px;bottom:0px" onclick="image_capture()">Capture</button>
-								      	</div>
-									      </div>
+								      			<%-- <img src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:60%"/> --%>
+								      			<button type="button" class="btn btn-primary" style="position:absolute;right:0px;bottom:0px" onclick="image_capture()">Capture</button>
+								      		</div>
+								      </div>
 								      </div>
 								      <div class="col-6 border border-dark rounded-lg">
 									      <div class="row" style="postion:relative;height:100%">
 									      	<div class="col-11">
-									      		<img id="capture" style="width:85%; height:100%" alt="not captured"/>
+									      		<img id="capture" style="width:95%; height:100%" alt="not captured"/>
 									      	</div>
 									      	<div class="col-1">
-										      	<button type="button" class="btn btn-primary" style="position:absolute;right:0px;bottom:0px" onclick="image_save()">Save</button>
+										      	<button type="button" class="btn btn-primary" style="position:absolute;right:0px;bottom:0px;width:84px;" onclick="image_save()">Save</button>
 									      	</div>
 									      </div>
 								      </div>
@@ -616,16 +616,16 @@ function hcsrMotor_down(direction) {
 								    <br>
 								    <div class="row">
 								      <div class="col-3">
-								      	<img id="show1" src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:60%"/>
+								      	<img id="show1" src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:90%"/>
 								      </div>
 								      <div class="col-3">
-								      	<img id="show2" src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:60%"/>
+								      	<img id="show2" src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:90%"/>
 								      </div>
 								      <div class="col-3">
-								      	<img id="show3" src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:60%"/>
+								      	<img id="show3" src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:90%"/>
 								      </div>
 								      <div class="col-3">
-								      	<img id="show4" src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:60%"/>
+								      	<img id="show4" src="${pageContext.request.contextPath}/resource/img/rover_view.jpg" style="width:90%; height:90%"/>
 								      </div>
 								    </div>
 								  </div>
